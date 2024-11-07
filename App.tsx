@@ -24,12 +24,6 @@ interface FlowComponent {
   optional?: boolean;         // Indicates if the component is optional
 }
 
-interface FlowPattern {
-  name: string;
-  description: string;
-  components: FlowComponent[]; // List of components within this pattern
-}
-
 const App: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -43,15 +37,15 @@ const App: React.FC = () => {
       console.log(parsedData)
 
       if (parsedData && parsedData.flow) {
-        const newNodes = parsedData.flow.components.map((component, index) => ({
+        const newNodes = parsedData.flow.map((component, index) => ({
           id: component.name,
           data: { label: component.name },
-          position: { x: 150 * index, y: 50 * index },
+          position: { x: 250, y: 150 * index },
           className: component.entry ? 'input' : '',
           style: component.optional ? { border: '2px dashed gray' } : {},
         }));
 
-        const newEdges = parsedData.flow.components
+        const newEdges = parsedData.flow
           .filter((component) => component.dependsOn)
           .flatMap((component) =>
             component.dependsOn.map((dependency) => ({
