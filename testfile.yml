@@ -1,0 +1,22 @@
+name: "Gateway with API proxy to 3:th-party services"
+description: "Pattern for handling HTTP request-response interactions."
+flow:
+    components:
+      - name: "API Gateway"
+        entry: true
+        service: 
+      - name: "API Proxy"
+        service: 
+        dependsOn: ["API Gateway"]
+      - name: "Caching"
+        service: 
+        dependsOn: ["API Proxy"]
+        optional: true
+      - name: "Web Service"
+        service: 
+        dependsOn: ["API Proxy"]
+      - name: "API"
+        service:
+        dependsOn: ["API Proxy"]
+
+

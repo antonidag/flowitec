@@ -10,38 +10,70 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import AceEditor from 'react-ace';
+import yaml from 'js-yaml';
 
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
+interface FlowComponent {
+  name: string;
+  service?: string;           // Optional, if service details might be empty
+  entry?: boolean;            // Indicates if the component is an entry point
+  dependsOn?: string[];       // Array of component names this component depends on
+  optional?: boolean;         // Indicates if the component is optional
+}
 
-const initialNodes = [
-  {
-    id: '1',
-    type: 'input',
-    data: { label: 'Node 0' },
-    position: { x: 250, y: 5 },
-    className: 'light',
-  },
-  {
-    id: '2',
-    data: { label: 'Group A' },
-    position: { x: 100, y: 100 },
-    className: 'light',
-    style: { backgroundColor: 'rgba(255, 0, 0, 0.2)', width: 200, height: 200 },
-  }
-];
- 
-const initialEdges = [
-  { id: 'e1-2', source: '1', target: '2', animated: true },
-];
+interface FlowPattern {
+  name: string;
+  description: string;
+  components: FlowComponent[]; // List of components within this pattern
+}
 
 const App: React.FC = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+
+  // Function to parse YAML and create nodes and edges
+  const parseYamlToFlow = (yamlText: string) => {
+    try {
+      const parsedData = yaml.load(yamlText);
+      console.log(parsedData)
+
+      if (parsedData && parsedData.flow) {
+        const newNodes = parsedData.flow.components.map((component, index) => ({
+          id: component.name,
+          data: { label: component.name },
+          position: { x: 150 * index, y: 50 * index },
+          className: component.entry ? 'input' : '',
+          style: component.optional ? { border: '2px dashed gray' } : {},
+        }));
+
+        const newEdges = parsedData.flow.components
+          .filter((component) => component.dependsOn)
+          .flatMap((component) =>
+            component.dependsOn.map((dependency) => ({
+              id: `${dependency}-${component.name}`,
+              source: dependency,
+              target: component.name,
+              animated: true,
+            }))
+          );
+
+        setNodes(newNodes);
+        setEdges(newEdges);
+      }
+    } catch (e) {
+      console.error("Error parsing YAML:", e);
+    }
+  };
+
+  // Handle editor changes
+  const onEditorChange = (value: string) => {
+    parseYamlToFlow(value); // Parse the YAML input whenever it changes
+  };
 
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
@@ -54,6 +86,7 @@ const App: React.FC = () => {
           height="100%"
           width="100%"
           showPrintMargin={false}
+          onChange={onEditorChange}
         />
       </div>
       

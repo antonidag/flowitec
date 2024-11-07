@@ -239,6 +239,11 @@
     "@types/d3-interpolate" "*"
     "@types/d3-selection" "*"
 
+"@types/js-yaml@^4.0.9":
+  version "4.0.9"
+  resolved "https://registry.npmjs.org/@types/js-yaml/-/js-yaml-4.0.9.tgz"
+  integrity sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==
+
 "@types/prop-types@*":
   version "15.7.13"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.13.tgz"
@@ -296,6 +301,11 @@ ace-builds@^1.36.3, ace-builds@^1.36.4:
   version "1.36.4"
   resolved "https://registry.npmjs.org/ace-builds/-/ace-builds-1.36.4.tgz"
   integrity sha512-eE+iAsLRfNsq30yd34cezKSob6/N9mQatWs44Bp5LUDgKZ3rJtQds/YtcbnwbEWMTe7yCIxG/Cfezd4BsKIiFg==
+
+argparse@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz"
+  integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
 browserslist@^4.24.0, "browserslist@>= 4.21.0":
   version "4.24.2"
@@ -477,6 +487,13 @@ is-core-module@^2.13.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
+
+js-yaml@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/js-yaml/-/js-yaml-4.1.0.tgz"
+  integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
+  dependencies:
+    argparse "^2.0.1"
 
 jsesc@^3.0.2:
   version "3.0.2"
