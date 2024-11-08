@@ -1,22 +1,24 @@
 name: "Gateway with API proxy to 3:th-party services"
 description: "Pattern for handling HTTP request-response interactions."
 flow:
-    components:
-      - name: "API Gateway"
-        entry: true
-        service: 
-      - name: "API Proxy"
-        service: 
-        dependsOn: ["API Gateway"]
-      - name: "Caching"
-        service: 
-        dependsOn: ["API Proxy"]
-        optional: true
-      - name: "Web Service"
-        service: 
-        dependsOn: ["API Proxy"]
-      - name: "API"
-        service:
-        dependsOn: ["API Proxy"]
-
+  - name: "private.com:433/"
+    service:
+  - name: "public.com:8443/"
+    service:
+  - name: "API Gateway"
+    dependsOn: ["private.com:433/","public.com:8443/"]
+    service:
+  - name: "API Proxy"
+    service:
+    dependsOn: ["API Gateway"]
+  - name: "Caching"
+    service:
+    dependsOn: ["API Proxy"]
+    optional: true
+  - name: "Web Service"
+    service:
+    dependsOn: ["Caching"]
+  - name: "API"
+    service:
+    dependsOn: ["Caching"]
 
