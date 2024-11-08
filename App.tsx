@@ -1,3 +1,4 @@
+// React imports
 import React, { useCallback } from 'react';
 import {
   ReactFlow,
@@ -5,39 +6,35 @@ import {
   Background,
   useNodesState,
   useEdgesState,
-  MiniMap,
   Controls,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import AceEditor from 'react-ace';
-import yaml from 'js-yaml';
-
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
-interface FlowComponent {
-  name: string;
-  service?: string;           // Optional, if service details might be empty
-  entry?: boolean;            // Indicates if the component is an entry point
-  dependsOn?: string[];       // Array of component names this component depends on
-  optional?: boolean;         // Indicates if the component is optional
-}
+// Internal imports
+import { parseYamlToIntegrationContext } from './src/parser'
 
+
+
+// React root App
 const App: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  
+
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
-  // Function to parse YAML and create nodes and edges
-  const parseYamlToFlow = (yamlText: string) => {
+  // Handle editor changes
+  const onEditorChange = (value: string) => {
     try {
-      const parsedData = yaml.load(yamlText);
-      console.log(parsedData)
+      // Parse the YAML input whenever it changes
+      const igContext = parseYamlToIntegrationContext(value);
 
-      if (parsedData && parsedData.flow) {
-        const newNodes = parsedData.flow.map((component, index) => ({
+      // Transform integration context to react flow-nodes 
+      if (igContext && igContext.flow) {
+        const newNodes = igContext.flow.map((component, index) => ({
           id: component.name,
           data: { label: component.name },
           position: { x: 250, y: 150 * index },
@@ -45,7 +42,7 @@ const App: React.FC = () => {
           style: component.optional ? { border: '2px dashed gray' } : {},
         }));
 
-        const newEdges = parsedData.flow
+        const newEdges = igContext.flow
           .filter((component) => component.dependsOn)
           .flatMap((component) =>
             component.dependsOn.map((dependency) => ({
@@ -60,13 +57,8 @@ const App: React.FC = () => {
         setEdges(newEdges);
       }
     } catch (e) {
-      console.error("Error parsing YAML:", e);
+      console.error("Error handling YAML:", e);
     }
-  };
-
-  // Handle editor changes
-  const onEditorChange = (value: string) => {
-    parseYamlToFlow(value); // Parse the YAML input whenever it changes
   };
 
   return (
@@ -83,7 +75,7 @@ const App: React.FC = () => {
           onChange={onEditorChange}
         />
       </div>
-      
+
       <div style={{ width: '50%', position: 'relative' }}>
         <ReactFlow
           nodes={nodes}
@@ -93,7 +85,6 @@ const App: React.FC = () => {
           onConnect={onConnect}
           style={{ width: '100%', height: '100%' }}
         >
-          <MiniMap />
           <Controls />
           <Background />
         </ReactFlow>
@@ -103,3 +94,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
