@@ -15,7 +15,7 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
 // Internal imports
-import { parseYamlToIntegrationContext } from './src/parser'
+import { loadYamlToJson } from './src/helper'
 
 
 
@@ -30,7 +30,7 @@ const App: React.FC = () => {
   const onEditorChange = (value: string) => {
     try {
       // Parse the YAML input whenever it changes
-      const igContext = parseYamlToIntegrationContext(value);
+      const igContext = loadYamlToJson(value);
 
       // Transform integration context to react flow-nodes 
       if (igContext && igContext.flow) {
