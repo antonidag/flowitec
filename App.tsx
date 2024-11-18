@@ -17,65 +17,10 @@ import * as ace from 'ace-builds';
 
 // Internal imports
 import { loadYamlToJson } from './src/helper';
-
-// Schema definition for IntegrationContext and Component
-const integrationContextSchema = {
-  name: { type: 'string', description: 'Name of the integration context' },
-  description: { type: 'string', description: 'Description of the integration context' },
-  flow: [
-    {
-      name: { type: 'string', description: 'Name of the component' },
-      optional: { type: 'boolean', description: 'Is the component optional?' },
-      entry: { type: 'boolean', description: 'Is this an entry component?' },
-      dependsOn: {
-        type: 'array',
-        items: { type: 'string', description: 'Dependencies of the component' },
-      },
-    },
-  ],
-};
-
-// Function to create suggestions from schema
-const createSuggestionsFromSchema = (schema: any, parentKey = '') => {
-  const suggestions: any[] = [];
-
-  for (const key in schema) {
-    if (schema.hasOwnProperty(key)) {
-      const fullKey = parentKey ? `${parentKey}.${key}` : key;
-
-      // Add suggestion for the current field
-      suggestions.push({
-        caption: key,
-        value: `${key}: `,
-        meta: schema[key].type || 'field',
-        description: schema[key].description || '',
-      });
-
-      // If the field is an object, recursively generate suggestions
-      if (schema[key].type === 'object' && schema[key].properties) {
-        suggestions.push(...createSuggestionsFromSchema(schema[key].properties, fullKey));
-      }
-
-      // If the field is an array of objects, recursively generate suggestions for array items
-      if (schema[key].type === 'array' && schema[key].items && schema[key].items.type === 'object') {
-        suggestions.push(...createSuggestionsFromSchema(schema[key].items.properties, `${fullKey}[]`));
-      }
-    }
-  }
-
-  return suggestions;
-};
-
-// Custom completer
-const schemaCompleter = {
-  getCompletions(editor, session, pos, prefix, callback) {
-    const contextSuggestions = createSuggestionsFromSchema(integrationContextSchema);
-    callback(null, contextSuggestions);
-  },
-};
+import {SchemaCompleter} from './src/editor_suggestions'
 
 // Register the completer
-ace.require('ace/ext/language_tools').addCompleter(schemaCompleter);
+ace.require('ace/ext/language_tools').addCompleter(SchemaCompleter);
 
 // React root App
 const App: React.FC = () => {
@@ -160,10 +105,11 @@ const App: React.FC = () => {
           onChange={onEditorChange}
           setOptions={{
             enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: true,
+            enableLiveAutocompletion: false,
+            enableSnippets: false,
             showLineNumbers: true,
             tabSize: 2,
+            highlightActiveLine: true,
           }}
         />
         {errorOverlay && (

@@ -1,31 +1,26 @@
 name: "Gateway with API proxy to 3:th-party services"
 description: "Pattern for handling HTTP request-response interactions."
 flow:
-  - name: "private.com:433/"
-    service:
-      - ref: 
+  - name: "private.com:433/"""
   - name: "public.com:8443/"
-    network: 
-    service:
   - name: "API Gateway"
     dependsOn: ["private.com:433/","public.com:8443/"]
-    service:
+    network: Public
   - name: "API Proxy"
     service:
     dependsOn: ["API Gateway"]
+    network: Private
   - name: "Caching"
-    service:
     dependsOn: ["API Proxy"]
+    network: Private
     optional: true
   - name: "Web Service"
-    service:
     dependsOn: ["Caching"]
+    network: Public
   - name: "API"
-    service:
     dependsOn: ["Caching"]
+    network: Public
 
 networks:
- - name: "Private"
  - name: "Public"
-
-services: 
+ - name: "Private"
