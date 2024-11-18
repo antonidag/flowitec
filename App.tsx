@@ -10,7 +10,7 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
@@ -65,7 +65,7 @@ const App: React.FC = () => {
     <div style={{ display: 'flex', height: '100vh' }}>
       <div style={{ width: '50%' }}>
         <AceEditor
-          mode="javascript"
+          mode="yaml"
           theme="monokai"
           name="texteditor"
           editorProps={{ $blockScrolling: false }}
@@ -73,6 +73,13 @@ const App: React.FC = () => {
           width="100%"
           showPrintMargin={false}
           onChange={onEditorChange}
+          setOptions={{
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            enableSnippets: true,
+            showLineNumbers: true,
+            tabSize: 2,
+          }}
         />
       </div>
 
