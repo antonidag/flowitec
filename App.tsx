@@ -13,11 +13,70 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/ext-language_tools';
+import * as ace from 'ace-builds';
 
 // Internal imports
-import { loadYamlToJson } from './src/helper'
+import { loadYamlToJson } from './src/helper';
+
+// Schema definition for IntegrationContext and Component
+const integrationContextSchema = {
+  name: { type: 'string', description: 'Name of the integration context' },
+  description: { type: 'string', description: 'Description of the integration context' },
+  flow: [
+    {
+      name: { type: 'string', description: 'Name of the component' },
+      optional: { type: 'boolean', description: 'Is the component optional?' },
+      entry: { type: 'boolean', description: 'Is this an entry component?' },
+      dependsOn: {
+        type: 'array',
+        items: { type: 'string', description: 'Dependencies of the component' },
+      },
+    },
+  ],
+};
+
+// Function to create suggestions from schema
+const createSuggestionsFromSchema = (schema: any, parentKey = '') => {
+  const suggestions: any[] = [];
+
+  for (const key in schema) {
+    if (schema.hasOwnProperty(key)) {
+      const fullKey = parentKey ? `${parentKey}.${key}` : key; // Build the full key path
+
+      // Add suggestion for the current field
+      suggestions.push({
+        caption: key,
+        value: `${key}: `,
+        meta: schema[key].type || 'field',
+        description: schema[key].description || '',
+      });
+
+      // If the field is an object, recursively generate suggestions
+      if (schema[key].type === 'object' && schema[key].properties) {
+        suggestions.push(...createSuggestionsFromSchema(schema[key].properties, fullKey));
+      }
+
+      // If the field is an array of objects, recursively generate suggestions for array items
+      if (schema[key].type === 'array' && schema[key].items && schema[key].items.type === 'object') {
+        suggestions.push(...createSuggestionsFromSchema(schema[key].items.properties, `${fullKey}[]`));
+      }
+    }
+  }
+
+  return suggestions;
+};
 
 
+// Custom completer
+const schemaCompleter = {
+  getCompletions(editor, session, pos, prefix, callback) {
+    const contextSuggestions = createSuggestionsFromSchema(integrationContextSchema);
+    callback(null, contextSuggestions);
+  },
+};
+
+// Register the completer
+ace.require('ace/ext/language_tools').addCompleter(schemaCompleter);
 
 // React root App
 const App: React.FC = () => {
@@ -26,13 +85,10 @@ const App: React.FC = () => {
 
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
-  // Handle editor changes
   const onEditorChange = (value: string) => {
     try {
-      // Parse the YAML input whenever it changes
       const igContext = loadYamlToJson(value);
 
-      // Transform integration context to react flow-nodes 
       if (igContext && igContext.flow) {
         const newNodes = igContext.flow.map((component, index) => ({
           id: component.name,
@@ -57,7 +113,7 @@ const App: React.FC = () => {
         setEdges(newEdges);
       }
     } catch (e) {
-      console.error("Error handling YAML:", e);
+      console.error('Error handling YAML:', e);
     }
   };
 
@@ -101,4 +157,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
