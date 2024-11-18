@@ -1,5 +1,5 @@
 // React imports
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   ReactFlow,
   addEdge,
@@ -41,7 +41,7 @@ const createSuggestionsFromSchema = (schema: any, parentKey = '') => {
 
   for (const key in schema) {
     if (schema.hasOwnProperty(key)) {
-      const fullKey = parentKey ? `${parentKey}.${key}` : key; // Build the full key path
+      const fullKey = parentKey ? `${parentKey}.${key}` : key;
 
       // Add suggestion for the current field
       suggestions.push({
@@ -66,7 +66,6 @@ const createSuggestionsFromSchema = (schema: any, parentKey = '') => {
   return suggestions;
 };
 
-
 // Custom completer
 const schemaCompleter = {
   getCompletions(editor, session, pos, prefix, callback) {
@@ -82,18 +81,21 @@ ace.require('ace/ext/language_tools').addCompleter(schemaCompleter);
 const App: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [errorOverlay, setErrorOverlay] = useState<string | null>(null);
 
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
   const onEditorChange = (value: string) => {
     try {
+      setErrorOverlay(null);
+
       // Clear previous annotations
       const editor = ace.edit('texteditor');
       editor.getSession().clearAnnotations();
-  
+
       // Parse the YAML input
       const igContext = loadYamlToJson(value);
-  
+
       // Validate and update nodes/edges if the YAML is valid
       if (igContext && igContext.flow) {
         const newNodes = igContext.flow.map((component, index) => ({
@@ -103,7 +105,7 @@ const App: React.FC = () => {
           className: component.entry ? 'input' : '',
           style: component.optional ? { border: '2px dashed gray' } : {},
         }));
-  
+
         const newEdges = igContext.flow
           .filter((component) => component.dependsOn)
           .flatMap((component) =>
@@ -114,38 +116,39 @@ const App: React.FC = () => {
               animated: true,
             }))
           );
-  
+
         setNodes(newNodes);
         setEdges(newEdges);
       }
     } catch (error) {
       console.error('Error parsing YAML:', error);
-  
+
       // Set an annotation to display the syntax error
       const editor = ace.edit('texteditor');
       editor.getSession().setAnnotations([
         {
-          row: getErrorLine(error), // Function to extract the line number from the error (see below)
+          row: getErrorLine(error),
           column: 0,
-          text: error.message, // Error message to display
-          type: 'error', // Error type ('error', 'warning', etc.)
+          text: error.message,
+          type: 'error',
         },
       ]);
+
+      // Set the error overlay message
+      setErrorOverlay(error.message || 'Unknown error occurred while parsing YAML.');
     }
   };
-  
-  // Helper function to extract the error line number
+
   const getErrorLine = (error: any): number => {
     if (error.mark && typeof error.mark.line === 'number') {
-      return error.mark.line; // Return the line number from the error object
+      return error.mark.line;
     }
-    return 0; // Default to the first line if no line number is available
+    return 0;
   };
-  
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <div style={{ width: '50%' }}>
+    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+      <div style={{ width: '50%', position: 'relative' }}>
         <AceEditor
           mode="yaml"
           theme="monokai"
@@ -163,9 +166,27 @@ const App: React.FC = () => {
             tabSize: 2,
           }}
         />
+        {errorOverlay && (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '10px',
+              left: '10px',
+              right: '10px',
+              padding: '10px',
+              backgroundColor: 'rgba(255, 0, 0, 0.9)',
+              color: 'white',
+              borderRadius: '5px',
+              fontSize: '0.9em',
+              pointerEvents: 'none',
+            }}
+          >
+            {errorOverlay}
+          </div>
+        )}
       </div>
 
-      <div style={{ width: '50%', position: 'relative' }}>
+      <div style={{ width: '50%' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
