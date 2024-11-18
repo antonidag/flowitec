@@ -87,8 +87,14 @@ const App: React.FC = () => {
 
   const onEditorChange = (value: string) => {
     try {
+      // Clear previous annotations
+      const editor = ace.edit('texteditor');
+      editor.getSession().clearAnnotations();
+  
+      // Parse the YAML input
       const igContext = loadYamlToJson(value);
-
+  
+      // Validate and update nodes/edges if the YAML is valid
       if (igContext && igContext.flow) {
         const newNodes = igContext.flow.map((component, index) => ({
           id: component.name,
@@ -97,7 +103,7 @@ const App: React.FC = () => {
           className: component.entry ? 'input' : '',
           style: component.optional ? { border: '2px dashed gray' } : {},
         }));
-
+  
         const newEdges = igContext.flow
           .filter((component) => component.dependsOn)
           .flatMap((component) =>
@@ -108,14 +114,34 @@ const App: React.FC = () => {
               animated: true,
             }))
           );
-
+  
         setNodes(newNodes);
         setEdges(newEdges);
       }
-    } catch (e) {
-      console.error('Error handling YAML:', e);
+    } catch (error) {
+      console.error('Error parsing YAML:', error);
+  
+      // Set an annotation to display the syntax error
+      const editor = ace.edit('texteditor');
+      editor.getSession().setAnnotations([
+        {
+          row: getErrorLine(error), // Function to extract the line number from the error (see below)
+          column: 0,
+          text: error.message, // Error message to display
+          type: 'error', // Error type ('error', 'warning', etc.)
+        },
+      ]);
     }
   };
+  
+  // Helper function to extract the error line number
+  const getErrorLine = (error: any): number => {
+    if (error.mark && typeof error.mark.line === 'number') {
+      return error.mark.line; // Return the line number from the error object
+    }
+    return 0; // Default to the first line if no line number is available
+  };
+  
 
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
