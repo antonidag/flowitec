@@ -179,6 +179,7 @@ const App: React.FC = () => {
               borderRadius: '5px',
               fontSize: '0.9em',
               pointerEvents: 'none',
+              zIndex: '100'
             }}
           >
             {errorOverlay}
