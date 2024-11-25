@@ -1,0 +1,33 @@
+name: "Gateway with API proxy to 3:th-party services"
+description: "Pattern for handling HTTP request-response interactions."
+flow:
+  - name: "API Gateway"
+  - name: "APIM"
+    service:
+    dependsOn: ["API Gateway"]
+  - name: "Topic: Recipt Advice"
+    service:
+    dependsOn: ["APIM"]
+  - name: "Subscription: ProconX"
+    service:
+    dependsOn: ["Topic: Recipt Advice"]
+  - name: "INT2003: Logic App"
+    service:
+    dependsOn: ["APIM"]
+  - name: "INT2002: Logic App"
+    service:
+    dependsOn: ["Subscription: ProconX"]
+  - name: "Routing & LookUp Table"
+    dependsOn: ["INT2003: Logic App", "INT2002: Logic App"]
+  - name: "Tickstar"
+    dependsOn: ["INT2003: Logic App"]
+  - name: "ProconX"
+    dependsOn: ["INT2002: Logic App"]
+  - name: "ProconX ..."
+    dependsOn: ["INT2002: Logic App"]
+
+    
+
+networks:
+ - name: "Public"
+ - name: "Private"

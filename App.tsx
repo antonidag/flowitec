@@ -20,7 +20,9 @@ import { loadYamlToJson } from './src/helper';
 import {SchemaCompleter} from './src/editor_suggestions'
 
 // Register the completer
-ace.require('ace/ext/language_tools').addCompleter(SchemaCompleter);
+//ace.require('ace/ext/language_tools').addCompleter(SchemaCompleter);
+// Register your custom completer
+ace.require("ace/ext/language_tools").setCompleters([SchemaCompleter]);
 
 // React root App
 const App: React.FC = () => {

@@ -20,6 +20,7 @@ flow:
   - name: "API"
     dependsOn: ["Caching"]
     network: Public
+    
 
 networks:
  - name: "Public"
