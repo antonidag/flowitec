@@ -163,7 +163,7 @@ const App: React.FC = () => {
         )}
       </div>
 
-      <div style={{ width: '50%' }}>
+      <div style={{ width: '100%' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}

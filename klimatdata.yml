@@ -1,31 +1,39 @@
 name: "Gateway with API proxy to 3:th-party services"
 description: "Pattern for handling HTTP request-response interactions."
 flow:
-  - name: "API Gateway"
-  - name: "APIM"
-    service:
-    dependsOn: ["API Gateway"]
-  - name: "Topic: Recipt Advice"
-    service:
-    dependsOn: ["APIM"]
-  - name: "Subscription: ProconX"
-    service:
-    dependsOn: ["Topic: Recipt Advice"]
-  - name: "INT2003: Logic App"
-    service:
-    dependsOn: ["APIM"]
-  - name: "INT2002: Logic App"
-    service:
-    dependsOn: ["Subscription: ProconX"]
-  - name: "Routing & LookUp Table"
-    dependsOn: ["INT2003: Logic App", "INT2002: Logic App"]
-  - name: "Tickstar"
-    dependsOn: ["INT2003: Logic App"]
-  - name: "ProconX"
-    dependsOn: ["INT2002: Logic App"]
-  - name: "ProconX ..."
-    dependsOn: ["INT2002: Logic App"]
-
+  - name: "Git Repo: config.json"
+  - name: "Azure DevOps"
+    dependsOn: ["Git Repo: config.json"]
+  - name: "App Configuration"
+    dependsOn: ["Azure DevOps"]
+  - name: "Logic App: INT2003 App Settings"
+    dependsOn: ["App Configuration"]
+  - name: "Logic App: INT2003"
+    dependsOn: ["Logic App: Service Bus Trigger", "Logic App: INT2003 App Settings"]
+  - name: "Logic App: INT2002 App Settings"
+    dependsOn: ["App Configuration"]
+  - name: "Client"
+  - name: "Internal API: KlimateData"
+    dependsOn: ["Client"]
+  - name: "Logic App: INT2002"
+    dependsOn: ["Logic App: INT2002 App Settings", "Internal API: KlimateData"]
+  - name: "Logic App: Service Bus Trigger"
+    dependsOn: ["Service Bus: Subscription"]
+  - name: "LookUp Table"
+    dependsOn: ["Logic App: INT2003","Logic App: INT2002"]
+  - name: "Service Bus: Topic"
+    dependsOn: ["Webhook Receiver"]
+  - name: "Service Bus: Subscription"
+    dependsOn: ["Service Bus: Topic"]
+  - name: "ClientX"
+    dependsOn: ["Logic App: INT2003"]
+  - name: "ClientY"
+    dependsOn: ["Logic App: INT2003"]
+  - name: "ClientZ"
+    dependsOn: ["Logic App: INT2003"]
+  - name: "Webhook Receiver"
+  - name: "Tickstar API"
+    dependsOn: ["Logic App: INT2002"]
     
 
 networks:
