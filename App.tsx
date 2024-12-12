@@ -16,12 +16,10 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import * as ace from 'ace-builds';
 
 // Internal imports
-import { loadYamlToJson } from './src/helper';
-import {SchemaCompleter} from './src/editor_suggestions'
+import { loadYamlToJson, convertFlowToYaml } from './src/helper'; // Add `convertFlowToYaml` to handle conversion
+import { SchemaCompleter } from './src/editor_suggestions';
 
 // Register the completer
-//ace.require('ace/ext/language_tools').addCompleter(SchemaCompleter);
-// Register your custom completer
 ace.require("ace/ext/language_tools").setCompleters([SchemaCompleter]);
 
 // React root App
@@ -29,30 +27,33 @@ const App: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [errorOverlay, setErrorOverlay] = useState<string | null>(null);
+  const [editorContent, setEditorContent] = useState<string>(''); // To sync YAML content with editor
 
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+
+  const updateEditorContent = useCallback(() => {
+    const flowRepresentation = convertFlowToYaml(nodes, edges); // Generate YAML from nodes and edges
+    setEditorContent(flowRepresentation);
+    const editor = ace.edit('texteditor');
+    editor.setValue(flowRepresentation, 1); // Update editor content
+  }, [nodes, edges]);
 
   const onEditorChange = (value: string) => {
     try {
       setErrorOverlay(null);
-  
-      // Clear previous annotations
       const editor = ace.edit('texteditor');
       editor.getSession().clearAnnotations();
-  
-      // Parse the YAML input
+
       const igContext = loadYamlToJson(value);
-  
+
       if (igContext && igContext.flow) {
         const newNodes = [];
         const nodesMap: Record<string, { x: number; y: number }> = {};
-  
-        // Process flow nodes
+
         igContext.flow.forEach((component, index) => {
-          const position = { x: 250, y: 150 * index };
+          const position = component.position || { x: 250, y: 150 * index };
           nodesMap[component.name] = position;
-  
-          // Add the main flow node
+
           newNodes.push({
             id: component.name,
             data: { label: component.name },
@@ -61,13 +62,12 @@ const App: React.FC = () => {
               ? { border: '2px dashed gray' }
               : { border: '1px solid #333' },
           });
-  
-          // Add the network node below the flow node, if network exists
+
           if (component.network) {
             newNodes.push({
               id: `network-${component.name}`,
               data: { label: component.network },
-              position: { x: position.x, y: position.y + 35}, // Place below the flow node
+              position: { x: position.x, y: position.y + 35 },
               style: {
                 backgroundColor: component.network === 'Public' ? '#add8e6' : '#87CEEB',
                 fontWeight: 'bold',
@@ -78,8 +78,7 @@ const App: React.FC = () => {
             });
           }
         });
-  
-        // Process edges
+
         const newEdges = igContext.flow
           .filter((component) => component.dependsOn)
           .flatMap((component) =>
@@ -90,15 +89,12 @@ const App: React.FC = () => {
               animated: true,
             }))
           );
-  
-        // Update nodes and edges
+
         setNodes(newNodes);
         setEdges(newEdges);
       }
     } catch (error) {
       console.error('Error parsing YAML:', error);
-  
-      // Set annotation for YAML error
       const editor = ace.edit('texteditor');
       editor.getSession().setAnnotations([
         {
@@ -108,11 +104,10 @@ const App: React.FC = () => {
           type: 'error',
         },
       ]);
-  
+
       setErrorOverlay(error.message || 'Unknown error occurred while parsing YAML.');
     }
   };
-  
 
   const getErrorLine = (error: any): number => {
     if (error.mark && typeof error.mark.line === 'number') {
@@ -120,6 +115,10 @@ const App: React.FC = () => {
     }
     return 0;
   };
+
+  const onNodeDragStop = useCallback(() => {
+    updateEditorContent(); // Update YAML when dragging stops
+  }, [updateEditorContent]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
@@ -133,6 +132,7 @@ const App: React.FC = () => {
           width="100%"
           showPrintMargin={false}
           onChange={onEditorChange}
+          value={editorContent}
           setOptions={{
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: false,
@@ -155,7 +155,7 @@ const App: React.FC = () => {
               borderRadius: '5px',
               fontSize: '0.9em',
               pointerEvents: 'none',
-              zIndex: '100'
+              zIndex: '100',
             }}
           >
             {errorOverlay}
@@ -169,6 +169,7 @@ const App: React.FC = () => {
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
+          onNodeDragStop={onNodeDragStop}
           onConnect={onConnect}
           style={{ width: '100%', height: '100%' }}
         >

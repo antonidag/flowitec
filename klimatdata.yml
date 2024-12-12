@@ -1,41 +1,106 @@
-name: "Gateway with API proxy to 3:th-party services"
-description: "Pattern for handling HTTP request-response interactions."
 flow:
-  - name: "Git Repo: config.json"
-  - name: "Azure DevOps"
-    dependsOn: ["Git Repo: config.json"]
-  - name: "App Configuration"
-    dependsOn: ["Azure DevOps"]
-  - name: "Logic App: INT2003 App Settings"
-    dependsOn: ["App Configuration"]
-  - name: "Logic App: INT2003"
-    dependsOn: ["Logic App: Service Bus Trigger", "Logic App: INT2003 App Settings"]
-  - name: "Logic App: INT2002 App Settings"
-    dependsOn: ["App Configuration"]
-  - name: "Client"
-  - name: "Internal API: KlimateData"
-    dependsOn: ["Client"]
-  - name: "Logic App: INT2002"
-    dependsOn: ["Logic App: INT2002 App Settings", "Internal API: KlimateData"]
-  - name: "Logic App: Service Bus Trigger"
-    dependsOn: ["Service Bus: Subscription"]
-  - name: "LookUp Table"
-    dependsOn: ["Logic App: INT2003","Logic App: INT2002"]
-  - name: "Service Bus: Topic"
-    dependsOn: ["Webhook Receiver"]
-  - name: "Service Bus: Subscription"
-    dependsOn: ["Service Bus: Topic"]
-  - name: "ClientX"
-    dependsOn: ["Logic App: INT2003"]
-  - name: "ClientY"
-    dependsOn: ["Logic App: INT2003"]
-  - name: "ClientZ"
-    dependsOn: ["Logic App: INT2003"]
-  - name: "Webhook Receiver"
-  - name: "Tickstar API"
-    dependsOn: ["Logic App: INT2002"]
-    
-
-networks:
- - name: "Public"
- - name: "Private"
+  - name: 'Git Repo: config.json'
+    position:
+      x: 265.05339603238485
+      'y': 17.384058460851204
+  - name: Azure DevOps
+    position:
+      x: 269
+      'y': 114
+    dependsOn:
+      - 'Git Repo: config.json'
+  - name: App Configuration
+    position:
+      x: 268.407071930656
+      'y': 209.41320863672124
+    dependsOn:
+      - Azure DevOps
+  - name: 'Logic App: INT2003 App Settings'
+    position:
+      x: 129.8688382896106
+      'y': 288.43372048966097
+    dependsOn:
+      - App Configuration
+  - name: 'Logic App: INT2003'
+    position:
+      x: 65
+      'y': 409
+    dependsOn:
+      - 'Logic App: Service Bus Trigger'
+      - 'Logic App: INT2003 App Settings'
+  - name: 'Logic App: INT2002 App Settings'
+    position:
+      x: 424
+      'y': 298
+    dependsOn:
+      - App Configuration
+  - name: Client
+    position:
+      x: 682
+      'y': 163
+  - name: 'Internal API: KlimateData'
+    position:
+      x: 598
+      'y': 298
+    dependsOn:
+      - Client
+  - name: 'Logic App: INT2002'
+    position:
+      x: 507
+      'y': 409
+    dependsOn:
+      - 'Logic App: INT2002 App Settings'
+      - 'Internal API: KlimateData'
+  - name: 'Logic App: Service Bus Trigger'
+    position:
+      x: -98
+      'y': 295.5
+    dependsOn:
+      - 'Service Bus: Subscription'
+  - name: LookUp Table
+    position:
+      x: 276
+      'y': 474
+    dependsOn:
+      - 'Logic App: INT2003'
+      - 'Logic App: INT2002'
+  - name: 'Service Bus: Topic'
+    position:
+      x: -72.50384165366609
+      'y': 127.96704368174727
+    dependsOn:
+      - Webhook Receiver
+  - name: 'Service Bus: Subscription'
+    position:
+      x: -98.88410434443688
+      'y': 216.09615181897883
+    dependsOn:
+      - 'Service Bus: Topic'
+  - name: ClientX
+    position:
+      x: -85.18817788179547
+      'y': 669.954123697007
+    dependsOn:
+      - 'Logic App: INT2003'
+  - name: ClientY
+    position:
+      x: -205.82805583896823
+      'y': 630.7295632367477
+    dependsOn:
+      - 'Logic App: INT2003'
+  - name: ClientZ
+    position:
+      x: 2.79444222597283
+      'y': 715.2018913170722
+    dependsOn:
+      - 'Logic App: INT2003'
+  - name: Webhook Receiver
+    position:
+      x: -280.9187207488301
+      'y': -2.4950468018720713
+  - name: Tickstar API
+    position:
+      x: 507.3774765990638
+      'y': 610.9488494539781
+    dependsOn:
+      - 'Logic App: INT2002'
