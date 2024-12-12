@@ -1,4 +1,3 @@
-// React imports
 import React, { useCallback, useState } from 'react';
 import {
   ReactFlow,
@@ -9,167 +8,148 @@ import {
   Controls,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-yaml';
-import 'ace-builds/src-noconflict/theme-monokai';
-import 'ace-builds/src-noconflict/ext-language_tools';
-import * as ace from 'ace-builds';
 
-// Internal imports
-import { loadYamlToJson, convertFlowToYaml } from './src/helper'; // Add `convertFlowToYaml` to handle conversion
-import { SchemaCompleter } from './src/editor_suggestions';
+import { loadYamlToJson, convertFlowToYaml } from './src/helper';
+import YAML from 'js-yaml';
 
-// Register the completer
-ace.require("ace/ext/language_tools").setCompleters([SchemaCompleter]);
-
-// React root App
 const App: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [errorOverlay, setErrorOverlay] = useState<string | null>(null);
-  const [editorContent, setEditorContent] = useState<string>(''); // To sync YAML content with editor
 
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+  const onConnect = useCallback(
+    (params) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges]
+  );
 
-  const updateEditorContent = useCallback(() => {
-    const flowRepresentation = convertFlowToYaml(nodes, edges); // Generate YAML from nodes and edges
-    setEditorContent(flowRepresentation);
-    const editor = ace.edit('texteditor');
-    editor.setValue(flowRepresentation, 1); // Update editor content
-  }, [nodes, edges]);
+  const loadYaml = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files?.length) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
 
-  const onEditorChange = (value: string) => {
-    try {
-      setErrorOverlay(null);
-      const editor = ace.edit('texteditor');
-      editor.getSession().clearAnnotations();
+      reader.onload = (e) => {
+        try {
+          const content = e.target?.result as string;
+          setErrorOverlay(null);
 
-      const igContext = loadYamlToJson(value);
+          const igContext = loadYamlToJson(content);
 
-      if (igContext && igContext.flow) {
-        const newNodes = [];
-        const nodesMap: Record<string, { x: number; y: number }> = {};
+          if (igContext && igContext.flow) {
+            const newNodes = [];
+            const nodesMap: Record<string, { x: number; y: number }> = {};
 
-        igContext.flow.forEach((component, index) => {
-          const position = component.position || { x: 250, y: 150 * index };
-          nodesMap[component.name] = position;
+            igContext.flow.forEach((component, index) => {
+              const position = component.position || { x: 250, y: 150 * index };
+              nodesMap[component.name] = position;
 
-          newNodes.push({
-            id: component.name,
-            data: { label: component.name },
-            position,
-            style: component.optional
-              ? { border: '2px dashed gray' }
-              : { border: '1px solid #333' },
-          });
+              newNodes.push({
+                id: component.name,
+                data: { label: component.name },
+                position,
+                style: component.optional
+                  ? { border: '2px dashed gray' }
+                  : { border: '1px solid #333' },
+              });
 
-          if (component.network) {
-            newNodes.push({
-              id: `network-${component.name}`,
-              data: { label: component.network },
-              position: { x: position.x, y: position.y + 35 },
-              style: {
-                backgroundColor: component.network === 'Public' ? '#add8e6' : '#87CEEB',
-                fontWeight: 'bold',
-                padding: '5px',
-                border: '2px solid #333',
-                fontSize: '12px',
-              },
+              if (component.network) {
+                newNodes.push({
+                  id: `network-${component.name}`,
+                  data: { label: component.network },
+                  position: { x: position.x, y: position.y + 35 },
+                  style: {
+                    backgroundColor: component.network === 'Public' ? '#add8e6' : '#87CEEB',
+                    fontWeight: 'bold',
+                    padding: '5px',
+                    border: '2px solid #333',
+                    fontSize: '12px',
+                  },
+                });
+              }
             });
+
+            const newEdges = igContext.flow
+              .filter((component) => component.dependsOn)
+              .flatMap((component) =>
+                component.dependsOn.map((dependency) => ({
+                  id: `${dependency}-${component.name}`,
+                  source: dependency,
+                  target: component.name,
+                  animated: true,
+                }))
+              );
+
+            setNodes(newNodes);
+            setEdges(newEdges);
           }
-        });
+        } catch (error) {
+          console.error('Error parsing YAML:', error);
+          setErrorOverlay(error.message || 'Unknown error occurred while parsing YAML.');
+        }
+      };
 
-        const newEdges = igContext.flow
-          .filter((component) => component.dependsOn)
-          .flatMap((component) =>
-            component.dependsOn.map((dependency) => ({
-              id: `${dependency}-${component.name}`,
-              source: dependency,
-              target: component.name,
-              animated: true,
-            }))
-          );
-
-        setNodes(newNodes);
-        setEdges(newEdges);
-      }
-    } catch (error) {
-      console.error('Error parsing YAML:', error);
-      const editor = ace.edit('texteditor');
-      editor.getSession().setAnnotations([
-        {
-          row: getErrorLine(error),
-          column: 0,
-          text: error.message,
-          type: 'error',
-        },
-      ]);
-
-      setErrorOverlay(error.message || 'Unknown error occurred while parsing YAML.');
+      reader.readAsText(file);
     }
   };
 
-  const getErrorLine = (error: any): number => {
-    if (error.mark && typeof error.mark.line === 'number') {
-      return error.mark.line;
-    }
-    return 0;
-  };
+  const exportYaml = () => {
+    const flow = nodes.map((node) => {
+      const dependsOn = edges
+        .filter((edge) => edge.target === node.id)
+        .map((edge) => edge.source);
 
-  const onNodeDragStop = useCallback(() => {
-    updateEditorContent(); // Update YAML when dragging stops
-  }, [updateEditorContent]);
+      return {
+        name: node.id,
+        position: { x: node.position.x, y: node.position.y },
+        ...(dependsOn.length > 0 && { dependsOn }),
+      };
+    });
+
+    const yamlString = YAML.dump({ flow });
+
+    const blob = new Blob([yamlString], { type: 'text/yaml' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'flow.yaml';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
-      <div style={{ width: '50%', position: 'relative' }}>
-        <AceEditor
-          mode="yaml"
-          theme="monokai"
-          name="texteditor"
-          editorProps={{ $blockScrolling: false }}
-          height="100%"
-          width="100%"
-          showPrintMargin={false}
-          onChange={onEditorChange}
-          value={editorContent}
-          setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: false,
-            enableSnippets: false,
-            showLineNumbers: true,
-            tabSize: 2,
-            highlightActiveLine: true,
-          }}
+    <div style={{ display: 'flex', height: '100vh' }}>
+      {/* Sidebar */}
+      <div
+        style={{
+          width: '20%',
+          padding: '10px',
+          background: '#f4f4f4',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px',
+        }}
+      >
+        <label htmlFor="yamlUpload" style={{ padding: '10px', background: '#007acc', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+          <b>Load YAML</b>
+        </label>
+        <input
+          type="file"
+          id="yamlUpload"
+          accept=".yaml,.yml"
+          style={{ display: 'none' }}
+          onChange={loadYaml}
         />
-        {errorOverlay && (
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '10px',
-              left: '10px',
-              right: '10px',
-              padding: '10px',
-              backgroundColor: 'rgba(255, 0, 0, 0.9)',
-              color: 'white',
-              borderRadius: '5px',
-              fontSize: '0.9em',
-              pointerEvents: 'none',
-              zIndex: '100',
-            }}
-          >
-            {errorOverlay}
-          </div>
-        )}
+        <button onClick={exportYaml} style={{ padding: '10px', background: '#007acc', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+          Export YAML
+        </button>
       </div>
 
-      <div style={{ width: '100%' }}>
+      {/* ReactFlow canvas */}
+      <div style={{ width: '80%' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
-          onNodeDragStop={onNodeDragStop}
           onConnect={onConnect}
           style={{ width: '100%', height: '100%' }}
         >
