@@ -115,6 +115,35 @@ const App: React.FC = () => {
     URL.revokeObjectURL(url);
   };
 
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+      const reactFlowBounds = event.currentTarget.getBoundingClientRect();
+      const type = event.dataTransfer.getData('application/reactflow');
+
+      if (!type) return;
+
+      const position = {
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      };
+      const newNode = {
+        id: `${type}-${nodes.length + 1}`,
+        type: 'default',
+        position,
+        data: { label: `${type}` },
+      };
+
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [nodes, setNodes]
+  );
+
+  const onDragOver = useCallback((event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
       {/* Sidebar */}
@@ -128,7 +157,7 @@ const App: React.FC = () => {
           gap: '10px',
         }}
       >
-        <label htmlFor="yamlUpload" style={{ padding: '10px', background: '#007acc', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+        <label htmlFor="yamlUpload" style={{ cursor: 'pointer', color: '#007acc' }}>
           <b>Load YAML</b>
         </label>
         <input
@@ -138,13 +167,37 @@ const App: React.FC = () => {
           style={{ display: 'none' }}
           onChange={loadYaml}
         />
-        <button onClick={exportYaml} style={{ padding: '10px', background: '#007acc', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+        <button
+          onClick={exportYaml}
+          style={{
+            padding: '10px',
+            background: '#007acc',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
+        >
           Export YAML
         </button>
+        <div
+          draggable
+          onDragStart={(event) => event.dataTransfer.setData('application/reactflow', 'Node')}
+          style={{
+            padding: '10px',
+            background: '#007acc',
+            color: 'white',
+            borderRadius: '5px',
+            textAlign: 'center',
+            cursor: 'grab',
+          }}
+        >
+          Drag Node
+        </div>
       </div>
 
       {/* ReactFlow canvas */}
-      <div style={{ width: '80%' }}>
+      <div style={{ width: '80%' }} onDrop={onDrop} onDragOver={onDragOver}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
