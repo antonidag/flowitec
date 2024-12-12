@@ -169,20 +169,13 @@ const App: React.FC = () => {
         />
         <button
           onClick={exportYaml}
-          style={{
-            padding: '10px',
-            background: '#007acc',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
+          style={{ cursor: 'pointer', color: '#007acc' }}
         >
           Export YAML
         </button>
         <div
           draggable
-          onDragStart={(event) => event.dataTransfer.setData('application/reactflow', 'Node')}
+          onDragStart={(event) => event.dataTransfer.setData('application/reactflow', 'Web Service')}
           style={{
             padding: '10px',
             background: '#007acc',
@@ -192,7 +185,49 @@ const App: React.FC = () => {
             cursor: 'grab',
           }}
         >
-          Drag Node
+          Web Service
+        </div>
+        <div
+          draggable
+          onDragStart={(event) => event.dataTransfer.setData('application/reactflow', 'API Management')}
+          style={{
+            padding: '10px',
+            background: '#007acc',
+            color: 'white',
+            borderRadius: '5px',
+            textAlign: 'center',
+            cursor: 'grab',
+          }}
+        >
+          API Management
+        </div>
+        <div
+          draggable
+          onDragStart={(event) => event.dataTransfer.setData('application/reactflow', 'Database')}
+          style={{
+            padding: '10px',
+            background: '#007acc',
+            color: 'white',
+            borderRadius: '5px',
+            textAlign: 'center',
+            cursor: 'grab',
+          }}
+        >
+          Database
+        </div>
+        <div
+          draggable
+          onDragStart={(event) => event.dataTransfer.setData('application/reactflow', 'Function')}
+          style={{
+            padding: '10px',
+            background: '#007acc',
+            color: 'white',
+            borderRadius: '5px',
+            textAlign: 'center',
+            cursor: 'grab',
+          }}
+        >
+          Function App
         </div>
       </div>
 
