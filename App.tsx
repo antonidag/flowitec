@@ -9,18 +9,72 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
-import { loadYamlToJson, convertFlowToYaml } from './src/helper';
 import YAML from 'js-yaml';
 
 const App: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [errorOverlay, setErrorOverlay] = useState<string | null>(null);
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
+
+  const handleDoubleClick = (event: React.MouseEvent, nodeId: string) => {
+    const updatedNodes = nodes.map((node) => {
+      if (node.id === nodeId) {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            editing: true, // Enable editing mode
+          },
+        };
+      }
+      return node;
+    });
+    setNodes(updatedNodes);
+  };
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>, nodeId: string) => {
+    const newName = event.target.value;
+
+    setNodes((prevNodes) =>
+      prevNodes.map((node) =>
+        node.id === nodeId
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                label: newName,
+              },
+            }
+          : node
+      )
+    );
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, nodeId: string) => {
+    if (event.key === 'Enter') {
+      handleBlur(nodeId);
+    }
+  };
+
+  const handleBlur = (nodeId: string) => {
+    setNodes((prevNodes) =>
+      prevNodes.map((node) =>
+        node.id === nodeId
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                editing: false, // Exit editing mode
+              },
+            }
+          : node
+      )
+    );
+  };
 
   const loadYaml = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
@@ -30,9 +84,8 @@ const App: React.FC = () => {
       reader.onload = (e) => {
         try {
           const content = e.target?.result as string;
-          setErrorOverlay(null);
 
-          const igContext = loadYamlToJson(content);
+          const igContext = YAML.load(content);
 
           if (igContext && igContext.flow) {
             const newNodes = [];
@@ -83,7 +136,6 @@ const App: React.FC = () => {
           }
         } catch (error) {
           console.error('Error parsing YAML:', error);
-          setErrorOverlay(error.message || 'Unknown error occurred while parsing YAML.');
         }
       };
 
@@ -145,8 +197,9 @@ const App: React.FC = () => {
   }, []);
 
   return (
+
     <div style={{ display: 'flex', height: '100vh' }}>
-      {/* Sidebar */}
+      {/* This should be an sidebar component */}
       <div
         style={{
           width: '20%',
@@ -157,6 +210,7 @@ const App: React.FC = () => {
           gap: '10px',
         }}
       >
+        {/* This should be an option menu component */}
         <label htmlFor="yamlUpload" style={{ cursor: 'pointer', color: '#007acc' }}>
           <b>Load YAML</b>
         </label>
@@ -173,6 +227,8 @@ const App: React.FC = () => {
         >
           Export YAML
         </button>
+
+        {/* This should be an service component */}
         <div
           draggable
           onDragStart={(event) => event.dataTransfer.setData('application/reactflow', 'Web Service')}
@@ -234,11 +290,30 @@ const App: React.FC = () => {
       {/* ReactFlow canvas */}
       <div style={{ width: '80%' }} onDrop={onDrop} onDragOver={onDragOver}>
         <ReactFlow
-          nodes={nodes}
+          nodes={nodes.map((node) => ({
+            ...node,
+            data: {
+              ...node.data,
+              label: node.data.editing ? (
+                <input
+                  type="text"
+                  value={node.data.label}
+                  onChange={(e) => handleNameChange(e, node.id)}
+                  onBlur={() => handleBlur(node.id)}
+                  onKeyDown={(e) => handleKeyDown(e, node.id)}
+                  autoFocus
+                  style={{ width: '100px' }}
+                />
+              ) : (
+                node.data.label
+              ),
+            },
+          }))}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          onNodeDoubleClick={(event, node) => handleDoubleClick(event, node.id)}
           style={{ width: '100%', height: '100%' }}
         >
           <Controls />
