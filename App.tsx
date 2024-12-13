@@ -14,11 +14,17 @@ import YAML from 'js-yaml';
 const App: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [clickedNode, setClickedNode] = useState<string | null>(null); // State for clicked node
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
+
+  const handleNodeClick = useCallback(
+    (event, node) => {
+      setClickedNode(node.id); // Update state with the clicked node's ID
+    }, []);
 
   const handleDoubleClick = (event: React.MouseEvent, nodeId: string) => {
     const updatedNodes = nodes.map((node) => {
@@ -181,6 +187,28 @@ const App: React.FC = () => {
     event.dataTransfer.dropEffect = 'move';
   }, []);
 
+  const handleKeyDownGlobal = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Delete') {
+        if (clickedNode) {
+          // Remove the clicked node
+          setNodes((prevNodes) => prevNodes.filter((node) => node.id !== clickedNode));
+
+          // Reset clickedNode after deletion
+          setClickedNode(null);
+        }
+      }
+    },
+    [clickedNode]
+  );
+
+  React.useEffect(() => {
+    window.addEventListener('keydown', handleKeyDownGlobal);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDownGlobal);
+    };
+  }, [handleKeyDownGlobal]);
+
   return (
 
     <div style={{ display: 'flex', height: '100vh' }}>
@@ -206,10 +234,7 @@ const App: React.FC = () => {
           style={{ display: 'none' }}
           onChange={loadYaml}
         />
-        <button
-          onClick={exportYaml}
-          style={{ cursor: 'pointer', color: '#007acc' }}
-        >
+        <button onClick={exportYaml} style={{ cursor: 'pointer', color: '#007acc' }}>
           Export YAML
         </button>
 
@@ -300,6 +325,7 @@ const App: React.FC = () => {
           onConnect={onConnect}
           onNodeDoubleClick={(event, node) => handleDoubleClick(event, node.id)}
           style={{ width: '100%', height: '100%' }}
+          onNodeClick={handleNodeClick}
         >
           <Controls />
           <Background />
