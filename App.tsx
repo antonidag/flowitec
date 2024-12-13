@@ -26,6 +26,7 @@ const App: React.FC = () => {
   // Ask Winberg how to deal with states, because it seems to not work properly
   const handleNodeClick = useCallback(
     (event, node) => {
+      console.log('Enter Node Click handle fnc')
       setClickedNode(node.id); // Update state with the clicked node's ID
       setClickedEdge(null)
       console.log({clickedEdge})
@@ -33,6 +34,7 @@ const App: React.FC = () => {
     }, []);
   const handleEdgeClick = useCallback(
     (event, edge) => {
+      console.log('Enter Edge Click handle fnc')
       setClickedEdge(edge.id); // Update state with the clicked edge's ID
       setClickedNode(null)
       console.log({clickedEdge})
