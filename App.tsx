@@ -43,12 +43,12 @@ const App: React.FC = () => {
       prevNodes.map((node) =>
         node.id === nodeId
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                label: newName,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              label: newName,
+            },
+          }
           : node
       )
     );
@@ -65,12 +65,12 @@ const App: React.FC = () => {
       prevNodes.map((node) =>
         node.id === nodeId
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                editing: false, // Exit editing mode
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              editing: false, // Exit editing mode
+            },
+          }
           : node
       )
     );
@@ -103,21 +103,6 @@ const App: React.FC = () => {
                   ? { border: '2px dashed gray' }
                   : { border: '1px solid #333' },
               });
-
-              if (component.network) {
-                newNodes.push({
-                  id: `network-${component.name}`,
-                  data: { label: component.network },
-                  position: { x: position.x, y: position.y + 35 },
-                  style: {
-                    backgroundColor: component.network === 'Public' ? '#add8e6' : '#87CEEB',
-                    fontWeight: 'bold',
-                    padding: '5px',
-                    border: '2px solid #333',
-                    fontSize: '12px',
-                  },
-                });
-              }
             });
 
             const newEdges = igContext.flow
