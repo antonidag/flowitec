@@ -16,18 +16,27 @@ type ServiceType =
   | "Web Service"
   | "API Management"
   | "Database"
-  | "Function App";
+  | "Function App"
+  | "Cache"
+  | "Container App"
+  | "Logic App";
 
 const ServiceNode = ({ service }: { service: ServiceType }) => {
   switch (service) {
     case "Web Service":
-      return <DraggableNode name="Web Service" background="#007acc" />;
+      return <DraggableNode name="Web Service" background="#007acc" imgURL="https://cdn-icons-png.flaticon.com/512/5669/5669390.png" />;
     case "API Management":
-      return <DraggableNode name="API Management" background="#ff00ff" />;
+      return <DraggableNode name="API Management" background="#ff00ff" imgURL="https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png" />;
     case "Database":
-      return <DraggableNode name="Database" background="brown" />;
+      return <DraggableNode name="Database" background="brown" imgURL="https://cdn-icons-png.flaticon.com/512/9850/9850812.png" />;
     case "Function App":
-      return <DraggableNode name="Function App" background="orange" />;
+      return <DraggableNode name="Function App" background="orange" imgURL="https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png" />;
+    case "Cache":
+      return <DraggableNode name="Cache" background="blue" imgURL="https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png" />;
+    case "Container App":
+      return <DraggableNode name="Container App" background="red" imgURL="https://cdn-icons-png.flaticon.com/512/860/860142.png" />;
+    case "Logic App":
+      return <DraggableNode name="Logic App" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
     default:
       const exhaustiveCheck: never = service;
       throw new Error(`Unhandled service type: ${exhaustiveCheck}`);
@@ -37,8 +46,9 @@ const ServiceNode = ({ service }: { service: ServiceType }) => {
 interface DraggableNodeProps {
   name: string;
   background: string;
+  imgURL?: string
 }
-const DraggableNode = ({ name, background }: DraggableNodeProps) => {
+const DraggableNode = ({ name, background, imgURL }: DraggableNodeProps) => {
   return (
     <div
       draggable
@@ -55,6 +65,7 @@ const DraggableNode = ({ name, background }: DraggableNodeProps) => {
       }}
     >
       {name}
+      {imgURL && <img src={imgURL} alt="Sometext" draggable="false" width="30" />}
     </div>
   );
 };
@@ -175,7 +186,10 @@ const Sidebar = () => {
       <ServiceNode service="Web Service" />
       <ServiceNode service="API Management" />
       <ServiceNode service="Database" />
+      <ServiceNode service="Cache" />
       <ServiceNode service="Function App" />
+      <ServiceNode service="Container App" />
+      <ServiceNode service="Logic App" />
     </div>
   );
 };
