@@ -97,6 +97,37 @@ const CollapsibleSection = ({
     </div>
   );
 };
+interface FileUploadProps {
+  label: string;
+  accept: string;
+  onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const FileUpload: React.FC<FileUploadProps> = ({ label, accept, onFileChange }) => (
+  <div>
+    <label htmlFor="fileUpload" style={{ cursor: "pointer", color: "#007acc" }}>
+      <b>{label}</b>
+    </label>
+    <input
+      type="file"
+      id="fileUpload"
+      accept={accept}
+      style={{ display: "none" }}
+      onChange={onFileChange}
+    />
+  </div>
+);
+
+interface ButtonProps {
+  label: string;
+  onClick: () => void;
+}
+
+const ActionButton: React.FC<ButtonProps> = ({ label, onClick }) => (
+  <button onClick={onClick} style={{ cursor: "pointer", color: "#007acc" }}>
+    {label}
+  </button>
+);
 
 const Sidebar = () => {
   const nodes = useNodes<FlowNode>();
@@ -191,26 +222,8 @@ const Sidebar = () => {
       }}
     >
       <h1>FlowiTec</h1>
-      {/* This should be an option menu component */}
-      <label
-        htmlFor="yamlUpload"
-        style={{ cursor: "pointer", color: "#007acc" }}
-      >
-        <b>Load YAML</b>
-      </label>
-      <input
-        type="file"
-        id="yamlUpload"
-        accept=".yaml,.yml"
-        style={{ display: "none" }}
-        onChange={loadYaml}
-      />
-      <button
-        onClick={exportYaml}
-        style={{ cursor: "pointer", color: "#007acc" }}
-      >
-        Export YAML
-      </button>
+      <FileUpload label="Load YAML" accept=".yaml,.yml" onFileChange={loadYaml} />
+      <ActionButton label="Export YAML" onClick={exportYaml} />
       <br />
 
       <CollapsibleSection title="Compute">
