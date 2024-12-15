@@ -29,7 +29,9 @@ type ServiceType =
   | "Azure Machine Learning"
   | "Cognitive Services"
   | "Virtual Network (VNet)"
-  | "Load Balancer";
+  | "Load Balancer"
+  | "VPN"
+  | "Application Gateway";
 
 const ServiceNode = ({ service }: { service: ServiceType }) => {
   switch (service) {
@@ -48,26 +50,29 @@ const ServiceNode = ({ service }: { service: ServiceType }) => {
     case "Logic App":
       return <DraggableNode name="Logic App" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
     case "Azure Machine Learning":
-      return <DraggableNode name="Azure Machine Learning" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name="Azure Machine Learning" background="green" imgURL="https://ms-toolsai.gallerycdn.vsassets.io/extensions/ms-toolsai/vscode-ai/0.47.2024031809/1710754151563/Microsoft.VisualStudio.Services.Icons.Default" />;
     case "Batch":
-      return <DraggableNode name="Batch" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name="Batch" background="green" imgURL="https://cdn-icons-png.flaticon.com/512/4241/4241580.png" />;
     case "Cognitive Services":
-      return <DraggableNode name="Cognitive Services" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name="Cognitive Services" background="green" imgURL="https://symbols.getvecta.com/stencil_27/29_cognative-services.8e53fef966.svg" />;
     case "Blob Storage":
-      return <DraggableNode name="Blob Storage" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name="Blob Storage" background="green" imgURL="https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png" />;
     case "Event Grid":
-      return <DraggableNode name="Event Grid" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name="Event Grid" background="green" imgURL="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default" />;
     case "File Share":
-      return <DraggableNode name="File Share" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name="File Share" background="green" imgURL="https://cdn-icons-png.flaticon.com/512/1869/1869460.png" />;
     case "Load Balancer":
-      return <DraggableNode name="Load Balancer" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name="Load Balancer" background="green" imgURL="https://cdn-icons-png.flaticon.com/512/5880/5880629.png" />;
     case "Service Bus":
-      return <DraggableNode name="Service Bus" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name="Service Bus" background="green" imgURL="https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315" />;
     case "Virtual Machines":
-      return <DraggableNode name="Virtual Machines" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name="Virtual Machines" background="green" imgURL="https://cdn-icons-png.flaticon.com/512/11813/11813930.png" />;
     case "Virtual Network (VNet)":
-      return <DraggableNode name="Virtual Network (VNet)" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
-
+      return <DraggableNode name="Virtual Network (VNet)" background="green" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
+    case "Application Gateway":
+      return <DraggableNode name="Application Gateway" background="green" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
+    case "VPN":
+      return <DraggableNode name="VPN" background="green" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
     default:
       const exhaustiveCheck: never = service;
       throw new Error(`Unhandled service type: ${exhaustiveCheck}`);
@@ -287,6 +292,8 @@ const Sidebar = () => {
       <CollapsibleSection title="Networking">
         <ServiceNode service="Virtual Network (VNet)" />
         <ServiceNode service="Load Balancer" />
+        <ServiceNode service="VPN" />
+        <ServiceNode service="Application Gateway" />
       </CollapsibleSection>
 
     </div>
