@@ -87,12 +87,12 @@ const Flow = () => {
       prevNodes.map((node) =>
         node.id === nodeId
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                label: newName,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              label: newName,
+            },
+          }
           : node
       )
     );
@@ -112,12 +112,12 @@ const Flow = () => {
       prevNodes.map((node) =>
         node.id === nodeId
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                editing: false, // Exit editing mode
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              editing: false, // Exit editing mode
+            },
+          }
           : node
       )
     );
@@ -126,7 +126,6 @@ const Flow = () => {
   const onDrop = useCallback<DragEventHandler>(
     (event) => {
       event.preventDefault();
-      const reactFlowBounds = event.currentTarget.getBoundingClientRect();
       const type = event.dataTransfer.getData("application/reactflow");
 
       if (!type) return;
@@ -138,9 +137,10 @@ const Flow = () => {
 
       const newNode: FlowNode = {
         id: `${type}-${nodes.length + 1}`,
-        type: "default",
+        type: type,
         position,
         data: { label: `${type}`, editing: false },
+        className: type.trim().toLocaleLowerCase().replace(/\s/g, ''),
       };
 
       setNodes((nds) => nds.concat(newNode));

@@ -4,13 +4,32 @@ body {
   font-family: sans-serif;
   box-sizing: border-box;
 }
-
 #app {
   width: 100vw;
   height: 100vh;
 }
+.webservice {
+  background: rgb(0, 122, 204);
+}
+.apimanagement {
+  background: rgb(255, 0, 255);
+}
+.database {
+  background: brown;
+}
+.functionapp {
+  background: orange;
+}
+.cache {
+  background: blue;
+}
+.cache {
+  background: blue;
+}
+.containerapp {
+  background: red;
+}
 
-
-#texteditor {
-  width: 100%;
+.logicapp {
+  background: green;
 }
