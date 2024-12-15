@@ -19,7 +19,17 @@ type ServiceType =
   | "Function App"
   | "Cache"
   | "Container App"
-  | "Logic App";
+  | "Logic App"
+  | "Virtual Machines"
+  | "Batch"
+  | "Event Grid"
+  | "Service Bus"
+  | "Blob Storage"
+  | "File Share"
+  | "Azure Machine Learning"
+  | "Cognitive Services"
+  | "Virtual Network (VNet)"
+  | "Load Balancer";
 
 const ServiceNode = ({ service }: { service: ServiceType }) => {
   switch (service) {
@@ -37,6 +47,27 @@ const ServiceNode = ({ service }: { service: ServiceType }) => {
       return <DraggableNode name="Container App" background="red" imgURL="https://cdn-icons-png.flaticon.com/512/860/860142.png" />;
     case "Logic App":
       return <DraggableNode name="Logic App" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+    case "Azure Machine Learning":
+      return <DraggableNode name="Azure Machine Learning" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+    case "Batch":
+      return <DraggableNode name="Batch" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+    case "Cognitive Services":
+      return <DraggableNode name="Cognitive Services" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+    case "Blob Storage":
+      return <DraggableNode name="Blob Storage" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+    case "Event Grid":
+      return <DraggableNode name="Event Grid" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+    case "File Share":
+      return <DraggableNode name="File Share" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+    case "Load Balancer":
+      return <DraggableNode name="Load Balancer" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+    case "Service Bus":
+      return <DraggableNode name="Service Bus" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+    case "Virtual Machines":
+      return <DraggableNode name="Virtual Machines" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+    case "Virtual Network (VNet)":
+      return <DraggableNode name="Virtual Network (VNet)" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+
     default:
       const exhaustiveCheck: never = service;
       throw new Error(`Unhandled service type: ${exhaustiveCheck}`);
@@ -230,17 +261,34 @@ const Sidebar = () => {
         <ServiceNode service="Web Service" />
         <ServiceNode service="Container App" />
         <ServiceNode service="Function App" />
+        <ServiceNode service="Virtual Machines" />
+        <ServiceNode service="Batch" />
       </CollapsibleSection>
 
       <CollapsibleSection title="Integration">
         <ServiceNode service="API Management" />
         <ServiceNode service="Logic App" />
+        <ServiceNode service="Event Grid" />
+        <ServiceNode service="Service Bus" />
       </CollapsibleSection>
 
       <CollapsibleSection title="Storage">
         <ServiceNode service="Database" />
         <ServiceNode service="Cache" />
+        <ServiceNode service="Blob Storage" />
+        <ServiceNode service="File Share" />
       </CollapsibleSection>
+
+      <CollapsibleSection title="AI and Machine Learning">
+        <ServiceNode service="Azure Machine Learning" />
+        <ServiceNode service="Cognitive Services" />
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Networking">
+        <ServiceNode service="Virtual Network (VNet)" />
+        <ServiceNode service="Load Balancer" />
+      </CollapsibleSection>
+
     </div>
   );
 };
