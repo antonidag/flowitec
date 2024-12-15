@@ -6,6 +6,7 @@ import {
   NodeMouseHandler,
   OnConnect,
   ReactFlow,
+  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, {
@@ -20,6 +21,9 @@ import { FlowEdge, FlowNode, useFlowContext } from "./FlowContext";
 const Flow = () => {
   const { nodes, setNodes, onNodesChange, edges, setEdges, onEdgesChange } =
     useFlowContext();
+  const { screenToFlowPosition } = useReactFlow(); // This hook now works with the provider
+
+
 
   const [clickedNode, setClickedNode] = useState<string | null>(null); // State for clicked node
   const [clickedEdge, setClickedEdge] = useState<string | null>(null); // State for clicked node
@@ -80,12 +84,12 @@ const Flow = () => {
       prevNodes.map((node) =>
         node.id === nodeId
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                label: newName,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              label: newName,
+            },
+          }
           : node
       )
     );
@@ -105,12 +109,12 @@ const Flow = () => {
       prevNodes.map((node) =>
         node.id === nodeId
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                editing: false, // Exit editing mode
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              editing: false, // Exit editing mode
+            },
+          }
           : node
       )
     );
@@ -124,10 +128,11 @@ const Flow = () => {
 
       if (!type) return;
 
-      const position = {
-        x: event.clientX - reactFlowBounds.left,
-        y: event.clientY - reactFlowBounds.top,
-      };
+      const position = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+
       const newNode: FlowNode = {
         id: `${type}-${nodes.length + 1}`,
         type: "default",
