@@ -1,8 +1,8 @@
+import { useEdges, useNodes, useReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import React from "react";
 import YAML from "js-yaml";
-
-import { FlowNode, useFlowContext } from "./FlowContext";
+import React from "react";
+import { FlowEdge, FlowNode } from "./Flow";
 
 type FlowYaml = {
   flow: Array<{
@@ -60,7 +60,9 @@ const DraggableNode = ({ name, background }: DraggableNodeProps) => {
 };
 
 const Sidebar = () => {
-  const { nodes, setNodes, edges, setEdges } = useFlowContext();
+  const nodes = useNodes<FlowNode>();
+  const edges = useEdges<FlowEdge>();
+  const { setNodes, setEdges } = useReactFlow<FlowNode, FlowEdge>();
 
   const loadYaml = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {

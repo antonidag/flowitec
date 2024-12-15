@@ -2,11 +2,15 @@ import {
   addEdge,
   Background,
   Controls,
+  Edge,
   EdgeMouseHandler,
+  Node,
   NodeMouseHandler,
   OnConnect,
   ReactFlow,
   useReactFlow,
+  useEdgesState,
+  useNodesState,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, {
@@ -16,14 +20,13 @@ import React, {
   useState,
 } from "react";
 
-import { FlowEdge, FlowNode, useFlowContext } from "./FlowContext";
+export type FlowNode = Node<{ label: string; editing: boolean }>;
+export type FlowEdge = Edge;
 
 const Flow = () => {
-  const { nodes, setNodes, onNodesChange, edges, setEdges, onEdgesChange } =
-    useFlowContext();
-  const { screenToFlowPosition } = useReactFlow(); // This hook now works with the provider
-
-
+  const [nodes, setNodes, onNodesChange] = useNodesState<FlowNode>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<FlowEdge>([]);
+  const { screenToFlowPosition } = useReactFlow();
 
   const [clickedNode, setClickedNode] = useState<string | null>(null); // State for clicked node
   const [clickedEdge, setClickedEdge] = useState<string | null>(null); // State for clicked node
@@ -84,12 +87,12 @@ const Flow = () => {
       prevNodes.map((node) =>
         node.id === nodeId
           ? {
-            ...node,
-            data: {
-              ...node.data,
-              label: newName,
-            },
-          }
+              ...node,
+              data: {
+                ...node.data,
+                label: newName,
+              },
+            }
           : node
       )
     );
@@ -109,12 +112,12 @@ const Flow = () => {
       prevNodes.map((node) =>
         node.id === nodeId
           ? {
-            ...node,
-            data: {
-              ...node.data,
-              editing: false, // Exit editing mode
-            },
-          }
+              ...node,
+              data: {
+                ...node.data,
+                editing: false, // Exit editing mode
+              },
+            }
           : node
       )
     );
