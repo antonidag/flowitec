@@ -162,6 +162,7 @@ const Sidebar = () => {
         gap: "10px",
       }}
     >
+      <h1>FlowiTec</h1>
       {/* This should be an option menu component */}
       <label
         htmlFor="yamlUpload"
@@ -182,7 +183,7 @@ const Sidebar = () => {
       >
         Export YAML
       </button>
-
+      <br></br>
       <ServiceNode service="Web Service" />
       <ServiceNode service="API Management" />
       <ServiceNode service="Database" />
