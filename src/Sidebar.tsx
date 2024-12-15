@@ -1,7 +1,7 @@
 import { useEdges, useNodes, useReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import YAML from "js-yaml";
-import React from "react";
+import React, { useState } from "react";
 import { FlowEdge, FlowNode } from "./Flow";
 
 type FlowYaml = {
@@ -66,6 +66,34 @@ const DraggableNode = ({ name, background, imgURL }: DraggableNodeProps) => {
     >
       {name}
       {imgURL && <img src={imgURL} alt="Sometext" draggable="false" width="30" />}
+    </div>
+  );
+};
+
+const CollapsibleSection = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <div>
+      <div
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          cursor: "pointer",
+          fontWeight: "bold",
+          padding: "5px",
+          background: "#e0e0e0",
+          borderRadius: "5px",
+        }}
+      >
+        {title} {isOpen ? "▼" : "▲"}
+      </div>
+      {isOpen && <div style={{ paddingLeft: "10px", marginTop: "5px" }}>{children}</div>}
     </div>
   );
 };
@@ -183,14 +211,23 @@ const Sidebar = () => {
       >
         Export YAML
       </button>
-      <br></br>
-      <ServiceNode service="Web Service" />
-      <ServiceNode service="API Management" />
-      <ServiceNode service="Database" />
-      <ServiceNode service="Cache" />
-      <ServiceNode service="Function App" />
-      <ServiceNode service="Container App" />
-      <ServiceNode service="Logic App" />
+      <br />
+
+      <CollapsibleSection title="Compute">
+        <ServiceNode service="Web Service" />
+        <ServiceNode service="Container App" />
+        <ServiceNode service="Function App" />
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Integration">
+        <ServiceNode service="API Management" />
+        <ServiceNode service="Logic App" />
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Storage">
+        <ServiceNode service="Database" />
+        <ServiceNode service="Cache" />
+      </CollapsibleSection>
     </div>
   );
 };
