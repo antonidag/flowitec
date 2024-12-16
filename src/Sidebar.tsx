@@ -132,7 +132,7 @@ const CollapsibleSection = ({
   title: string;
   children: React.ReactNode;
 }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div>
