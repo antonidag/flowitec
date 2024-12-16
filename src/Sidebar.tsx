@@ -3,6 +3,7 @@ import "@xyflow/react/dist/style.css";
 import YAML from "js-yaml";
 import React, { useState } from "react";
 import { FlowEdge, FlowNode } from "./Flow";
+import { NodeTransferData } from "./Types";
 
 type FlowYaml = {
   flow: Array<{
@@ -36,43 +37,43 @@ type ServiceType =
 const ServiceNode = ({ service }: { service: ServiceType }) => {
   switch (service) {
     case "Web Service":
-      return <DraggableNode name="Web Service" background="#007acc" imgURL="https://cdn-icons-png.flaticon.com/512/5669/5669390.png" />;
+      return <DraggableNode name="Web Service" imgURL="https://cdn-icons-png.flaticon.com/512/5669/5669390.png" />;
     case "API Management":
-      return <DraggableNode name="API Management" background="#ff00ff" imgURL="https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png" />;
+      return <DraggableNode name="API Management" imgURL="https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png" />;
     case "Database":
-      return <DraggableNode name="Database" background="brown" imgURL="https://cdn-icons-png.flaticon.com/512/9850/9850812.png" />;
+      return <DraggableNode name="Database" imgURL="https://cdn-icons-png.flaticon.com/512/9850/9850812.png" />;
     case "Function App":
-      return <DraggableNode name="Function App" background="orange" imgURL="https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png" />;
+      return <DraggableNode name="Function App" imgURL="https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png" />;
     case "Cache":
-      return <DraggableNode name="Cache" background="blue" imgURL="https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png" />;
+      return <DraggableNode name="Cache" imgURL="https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png" />;
     case "Container App":
-      return <DraggableNode name="Container App" background="red" imgURL="https://cdn-icons-png.flaticon.com/512/860/860142.png" />;
+      return <DraggableNode name="Container App" imgURL="https://cdn-icons-png.flaticon.com/512/860/860142.png" />;
     case "Logic App":
-      return <DraggableNode name="Logic App" background="green" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name="Logic App" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
     case "Azure Machine Learning":
-      return <DraggableNode name="Azure Machine Learning" background="green" imgURL="https://ms-toolsai.gallerycdn.vsassets.io/extensions/ms-toolsai/vscode-ai/0.47.2024031809/1710754151563/Microsoft.VisualStudio.Services.Icons.Default" />;
+      return <DraggableNode name="Azure Machine Learning" imgURL="https://ms-toolsai.gallerycdn.vsassets.io/extensions/ms-toolsai/vscode-ai/0.47.2024031809/1710754151563/Microsoft.VisualStudio.Services.Icons.Default" />;
     case "Batch":
-      return <DraggableNode name="Batch" background="green" imgURL="https://cdn-icons-png.flaticon.com/512/4241/4241580.png" />;
+      return <DraggableNode name="Batch" imgURL="https://cdn-icons-png.flaticon.com/512/4241/4241580.png" />;
     case "Cognitive Services":
-      return <DraggableNode name="Cognitive Services" background="green" imgURL="https://symbols.getvecta.com/stencil_27/29_cognative-services.8e53fef966.svg" />;
+      return <DraggableNode name="Cognitive Services" imgURL="https://symbols.getvecta.com/stencil_27/29_cognative-services.8e53fef966.svg" />;
     case "Blob Storage":
-      return <DraggableNode name="Blob Storage" background="green" imgURL="https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png" />;
+      return <DraggableNode name="Blob Storage" imgURL="https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png" />;
     case "Event Grid":
-      return <DraggableNode name="Event Grid" background="green" imgURL="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default" />;
+      return <DraggableNode name="Event Grid" imgURL="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default" />;
     case "File Share":
-      return <DraggableNode name="File Share" background="green" imgURL="https://cdn-icons-png.flaticon.com/512/1869/1869460.png" />;
+      return <DraggableNode name="File Share" imgURL="https://cdn-icons-png.flaticon.com/512/1869/1869460.png" />;
     case "Load Balancer":
-      return <DraggableNode name="Load Balancer" background="green" imgURL="https://cdn-icons-png.flaticon.com/512/5880/5880629.png" />;
+      return <DraggableNode name="Load Balancer" imgURL="https://cdn-icons-png.flaticon.com/512/5880/5880629.png" />;
     case "Service Bus":
-      return <DraggableNode name="Service Bus" background="green" imgURL="https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315" />;
+      return <DraggableNode name="Service Bus" imgURL="https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315" />;
     case "Virtual Machines":
-      return <DraggableNode name="Virtual Machines" background="green" imgURL="https://cdn-icons-png.flaticon.com/512/11813/11813930.png" />;
+      return <DraggableNode name="Virtual Machines" imgURL="https://cdn-icons-png.flaticon.com/512/11813/11813930.png" />;
     case "Virtual Network (VNet)":
-      return <DraggableNode name="Virtual Network (VNet)" background="green" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
+      return <DraggableNode name="Virtual Network (VNet)" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
     case "Application Gateway":
-      return <DraggableNode name="Application Gateway" background="green" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
+      return <DraggableNode name="Application Gateway" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
     case "VPN":
-      return <DraggableNode name="VPN" background="green" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
+      return <DraggableNode name="VPN" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
     default:
       const exhaustiveCheck: never = service;
       throw new Error(`Unhandled service type: ${exhaustiveCheck}`);
@@ -81,19 +82,37 @@ const ServiceNode = ({ service }: { service: ServiceType }) => {
 
 interface DraggableNodeProps {
   name: string;
-  background: string;
   imgURL?: string
 }
-const DraggableNode = ({ name, background, imgURL }: DraggableNodeProps) => {
+
+// Function to convert a string to a color
+const nameToHexColor = (name: string): string => {
+  // Create a hash from the string
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  // Convert the hash to a hex color
+  const color = `#${((hash >> 24) & 0xff).toString(16).padStart(2, "0")}${((hash >> 16) & 0xff).toString(16).padStart(2, "0")}${((hash >> 8) & 0xff).toString(16).padStart(2, "0")}`;
+  return color.slice(0, 7); // Ensure it's a valid 6-character hex color
+};
+
+const DraggableNode = ({ name, imgURL }: DraggableNodeProps) => {
+  const dynamicColor = nameToHexColor(name);
+  const nodeTransferData: NodeTransferData = {
+    name,
+    imgURL,
+    color: dynamicColor
+  };
   return (
     <div
       draggable
       onDragStart={(event) =>
-        event.dataTransfer.setData("application/reactflow", name)
+        event.dataTransfer.setData("application/reactflow", JSON.stringify(nodeTransferData))
       }
       style={{
         padding: "10px",
-        background,
+        background: nameToHexColor(name),
         color: "white",
         borderRadius: "5px",
         textAlign: "center",
@@ -101,7 +120,7 @@ const DraggableNode = ({ name, background, imgURL }: DraggableNodeProps) => {
       }}
     >
       {name}
-      {imgURL && <img src={imgURL} alt="Sometext" draggable="false" width="30" />}
+      {imgURL && <img src={imgURL} alt={name} draggable="false" width="30" />}
     </div>
   );
 };

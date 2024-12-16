@@ -8,6 +8,7 @@ body {
   width: 100vw;
   height: 100vh;
 }
+/* This could be used but is not a must...? 
 .webservice {
   background: rgb(0, 122, 204);
 }
@@ -32,4 +33,4 @@ body {
 
 .logicapp {
   background: green;
-}
+} */
