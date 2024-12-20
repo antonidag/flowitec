@@ -32,48 +32,60 @@ type ServiceType =
   | "Virtual Network (VNet)"
   | "Load Balancer"
   | "VPN"
-  | "Application Gateway";
+  | "Application Gateway"
+  | "XML"
+  | "JSON"
+  | "CSV"
+  | "Binary";
 
 const ServiceNode = ({ service }: { service: ServiceType }) => {
   switch (service) {
     case "Web Service":
-      return <DraggableNode name="Web Service" imgURL="https://cdn-icons-png.flaticon.com/512/5669/5669390.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5669/5669390.png" />;
     case "API Management":
-      return <DraggableNode name="API Management" imgURL="https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png" />;
     case "Database":
-      return <DraggableNode name="Database" imgURL="https://cdn-icons-png.flaticon.com/512/9850/9850812.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/9850/9850812.png" />;
     case "Function App":
-      return <DraggableNode name="Function App" imgURL="https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png" />;
+      return <DraggableNode name={service} imgURL="https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png" />;
     case "Cache":
-      return <DraggableNode name="Cache" imgURL="https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png" />;
     case "Container App":
-      return <DraggableNode name="Container App" imgURL="https://cdn-icons-png.flaticon.com/512/860/860142.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/860/860142.png" />;
     case "Logic App":
-      return <DraggableNode name="Logic App" imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
+      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
     case "Azure Machine Learning":
-      return <DraggableNode name="Azure Machine Learning" imgURL="https://ms-toolsai.gallerycdn.vsassets.io/extensions/ms-toolsai/vscode-ai/0.47.2024031809/1710754151563/Microsoft.VisualStudio.Services.Icons.Default" />;
+      return <DraggableNode name={service} imgURL="https://ms-toolsai.gallerycdn.vsassets.io/extensions/ms-toolsai/vscode-ai/0.47.2024031809/1710754151563/Microsoft.VisualStudio.Services.Icons.Default" />;
     case "Batch":
-      return <DraggableNode name="Batch" imgURL="https://cdn-icons-png.flaticon.com/512/4241/4241580.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/4241/4241580.png" />;
     case "Cognitive Services":
-      return <DraggableNode name="Cognitive Services" imgURL="https://symbols.getvecta.com/stencil_27/29_cognative-services.8e53fef966.svg" />;
+      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_27/29_cognative-services.8e53fef966.svg" />;
     case "Blob Storage":
-      return <DraggableNode name="Blob Storage" imgURL="https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png" />;
+      return <DraggableNode name={service} imgURL="https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png" />;
     case "Event Grid":
-      return <DraggableNode name="Event Grid" imgURL="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default" />;
+      return <DraggableNode name={service} imgURL="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default" />;
     case "File Share":
-      return <DraggableNode name="File Share" imgURL="https://cdn-icons-png.flaticon.com/512/1869/1869460.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/1869/1869460.png" />;
     case "Load Balancer":
-      return <DraggableNode name="Load Balancer" imgURL="https://cdn-icons-png.flaticon.com/512/5880/5880629.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5880/5880629.png" />;
     case "Service Bus":
-      return <DraggableNode name="Service Bus" imgURL="https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315" />;
+      return <DraggableNode name={service} imgURL="https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315" />;
     case "Virtual Machines":
-      return <DraggableNode name="Virtual Machines" imgURL="https://cdn-icons-png.flaticon.com/512/11813/11813930.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/11813/11813930.png" />;
     case "Virtual Network (VNet)":
-      return <DraggableNode name="Virtual Network (VNet)" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
+      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
     case "Application Gateway":
-      return <DraggableNode name="Application Gateway" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
+      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
     case "VPN":
-      return <DraggableNode name="VPN" imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
+      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
+    case "JSON":
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/6394/6394065.png" />;
+    case "XML":
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5105/5105259.png" />;
+    case "CSV":
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/15424/15424745.png" />;
+    case "Binary":
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/1541/1541857.png" />;
     default:
       const exhaustiveCheck: never = service;
       throw new Error(`Unhandled service type: ${exhaustiveCheck}`);
@@ -280,40 +292,49 @@ const Sidebar = () => {
       <FileUpload label="Load YAML" accept=".yaml,.yml" onFileChange={loadYaml} />
       <ActionButton label="Export YAML" onClick={exportYaml} />
       <br />
+      <div style={{ overflowY: "auto" }}>
+        <CollapsibleSection title="Compute">
+          <ServiceNode service="Web Service" />
+          <ServiceNode service="Container App" />
+          <ServiceNode service="Function App" />
+          <ServiceNode service="Virtual Machines" />
+          <ServiceNode service="Batch" />
+        </CollapsibleSection>
 
-      <CollapsibleSection title="Compute">
-        <ServiceNode service="Web Service" />
-        <ServiceNode service="Container App" />
-        <ServiceNode service="Function App" />
-        <ServiceNode service="Virtual Machines" />
-        <ServiceNode service="Batch" />
-      </CollapsibleSection>
+        <CollapsibleSection title="Integration">
+          <ServiceNode service="API Management" />
+          <ServiceNode service="Logic App" />
+          <ServiceNode service="Event Grid" />
+          <ServiceNode service="Service Bus" />
+        </CollapsibleSection>
 
-      <CollapsibleSection title="Integration">
-        <ServiceNode service="API Management" />
-        <ServiceNode service="Logic App" />
-        <ServiceNode service="Event Grid" />
-        <ServiceNode service="Service Bus" />
-      </CollapsibleSection>
+        <CollapsibleSection title="Storage">
+          <ServiceNode service="Database" />
+          <ServiceNode service="Cache" />
+          <ServiceNode service="Blob Storage" />
+          <ServiceNode service="File Share" />
+        </CollapsibleSection>
 
-      <CollapsibleSection title="Storage">
-        <ServiceNode service="Database" />
-        <ServiceNode service="Cache" />
-        <ServiceNode service="Blob Storage" />
-        <ServiceNode service="File Share" />
-      </CollapsibleSection>
+        <CollapsibleSection title="AI and Machine Learning">
+          <ServiceNode service="Azure Machine Learning" />
+          <ServiceNode service="Cognitive Services" />
+        </CollapsibleSection>
 
-      <CollapsibleSection title="AI and Machine Learning">
-        <ServiceNode service="Azure Machine Learning" />
-        <ServiceNode service="Cognitive Services" />
-      </CollapsibleSection>
+        <CollapsibleSection title="Networking">
+          <ServiceNode service="Virtual Network (VNet)" />
+          <ServiceNode service="Load Balancer" />
+          <ServiceNode service="VPN" />
+          <ServiceNode service="Application Gateway" />
+        </CollapsibleSection>
 
-      <CollapsibleSection title="Networking">
-        <ServiceNode service="Virtual Network (VNet)" />
-        <ServiceNode service="Load Balancer" />
-        <ServiceNode service="VPN" />
-        <ServiceNode service="Application Gateway" />
-      </CollapsibleSection>
+        <CollapsibleSection title="Data Formats and Files">
+          <ServiceNode service="XML" />
+          <ServiceNode service="JSON" />
+          <ServiceNode service="CSV" />
+          <ServiceNode service="Binary" />
+        </CollapsibleSection>
+      </div>
+
 
     </div>
   );
