@@ -3,7 +3,7 @@ import "@xyflow/react/dist/style.css";
 import YAML from "js-yaml";
 import React, { useState } from "react";
 import { FlowEdge, FlowNode } from "./Flow";
-import { NodeTransferData } from "./Types";
+import { TransferData } from "./Types";
 
 type FlowYaml = {
   flow: Array<{
@@ -111,7 +111,7 @@ const nameToHexColor = (name: string): string => {
 
 const DraggableNode = ({ name, imgURL }: DraggableNodeProps) => {
   const dynamicColor = nameToHexColor(name);
-  const nodeTransferData: NodeTransferData = {
+  const transferData: TransferData = {
     name,
     imgURL,
     color: dynamicColor
@@ -120,7 +120,7 @@ const DraggableNode = ({ name, imgURL }: DraggableNodeProps) => {
     <div
       draggable
       onDragStart={(event) =>
-        event.dataTransfer.setData("application/reactflow", JSON.stringify(nodeTransferData))
+        event.dataTransfer.setData("application/reactflow", JSON.stringify(transferData))
       }
       style={{
         padding: "10px",

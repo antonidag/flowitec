@@ -19,7 +19,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { NodeTransferData } from "./Types";
+import { TransferData } from "./Types";
 
 export type FlowNode = Node<{ label: string; editing: boolean }>;
 export type FlowEdge = Edge;
@@ -127,9 +127,9 @@ const Flow = () => {
   const onDrop = useCallback<DragEventHandler>(
     (event) => {
       event.preventDefault();
-      const nodeTransferData = JSON.parse(event.dataTransfer.getData("application/reactflow")) as NodeTransferData;
+      const transferData = JSON.parse(event.dataTransfer.getData("application/reactflow")) as TransferData;
 
-      if (!nodeTransferData) return;
+      if (!transferData) return;
 
       const position = screenToFlowPosition({
         x: event.clientX,
@@ -137,12 +137,12 @@ const Flow = () => {
       });
 
       const newNode: FlowNode = {
-        id: `${nodeTransferData.name}-${nodes.length + 1}`,
-        type: nodeTransferData.name,
+        id: `${transferData.name}-${nodes.length + 1}`,
+        type: transferData.name,
         position,
-        data: { label: `${nodeTransferData.name}`, editing: false },
-        className: nodeTransferData.name.trim().toLocaleLowerCase().replace(/\s/g, ''),
-        style: { background: nodeTransferData.color }
+        data: { label: `${transferData.name}`, editing: false },
+        className: transferData.name.trim().toLocaleLowerCase().replace(/\s/g, ''),
+        style: { background: transferData.color }
       };
 
       setNodes((nds) => nds.concat(newNode));
