@@ -289,9 +289,8 @@ const Sidebar = () => {
       }}
     >
       <h1>FlowiTec</h1>
-      <FileUpload label="Load YAML" accept=".yaml,.yml" onFileChange={loadYaml} />
-      <ActionButton label="Export YAML" onClick={exportYaml} />
-      <br />
+      {/* <FileUpload label="Load YAML" accept=".yaml,.yml" onFileChange={loadYaml} />
+      <ActionButton label="Export YAML" onClick={exportYaml} /> */}
       <div style={{ overflowY: "auto" }}>
         <CollapsibleSection title="Compute">
           <ServiceNode service="Web Service" />
