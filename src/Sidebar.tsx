@@ -258,10 +258,6 @@ const contentStyle: React.CSSProperties = {
 };
 
 const Sidebar = () => {
-  const nodes = useNodes<FlowNode>();
-  const edges = useEdges<FlowEdge>();
-  const { setNodes, setEdges } = useReactFlow<FlowNode, FlowEdge>();
-
   return (
     <div style={sidebarStyle}>
       <h1 style={headerStyle}>FlowiTec</h1>
