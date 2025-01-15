@@ -2,15 +2,21 @@ import React, { memo } from 'react';
 
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react';
 
-export type TurboNodeData = {
-  title: string;
-  subline?: string;
-  label: string;
-  iconUrl?: string; // Optional property for the icon URL
-  appRole?: string[]; // Updated to explicitly type the appRole as an array of strings
-};
 
-export default memo(({ data }: NodeProps<Node<TurboNodeData>>) => {
+type ServiceCategory = 'Compute' | 'Integration' | 'Storage' | 'Network' | 'Data Formats'
+
+
+export type ServiceNode = {
+  title: string
+  category: ServiceCategory
+  iconUrl: string
+  appRoles?: string[]
+  subline?: string,
+  label?: string,
+  editing?: boolean
+}
+
+export default memo(({ data }: NodeProps<Node<ServiceNode>>) => {
   return (
     <div style={nodeStyle}>
       {data.iconUrl && <img src={data.iconUrl} alt="Icon" style={iconStyle} />}
@@ -18,11 +24,11 @@ export default memo(({ data }: NodeProps<Node<TurboNodeData>>) => {
       <div style={labelStyle}>{data.label}</div>
       {data.subline && <div style={sublineStyle}>{data.subline}</div>}
 
-      {data.appRole && (
+      {data.appRoles && (
         <div>
           <label htmlFor="app_role">Act as:</label>
           <select name="app_role" id="app_role">
-            {data.appRole.map((role, index) => (
+            {data.appRoles.map((role, index) => (
               <option key={index} value={role}>
                 {role}
               </option>

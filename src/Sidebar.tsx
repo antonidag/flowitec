@@ -1,102 +1,127 @@
 import { useEdges, useNodes, useReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import YAML from "js-yaml";
 import React, { useState } from "react";
 import { FlowEdge, FlowNode } from "./Flow";
-import { TransferData } from "./Types";
-import { TurboNodeData } from "./FlowNode";
+import { ServiceNode } from "./CustomServiceNode";
 
-type FlowYaml = {
-  flow: Array<{
-    name: string;
-    position: { x: number; y: number };
-    dependsOn: string[];
-  }>;
-};
 
-type ServiceType =
-  | "Web Service"
-  | "API Management"
-  | "Database"
-  | "Function App"
-  | "Cache"
-  | "Container App"
-  | "Logic App"
-  | "Virtual Machines"
-  | "Batch"
-  | "Event Grid"
-  | "Service Bus"
-  | "Blob Storage"
-  | "File Share"
-  | "Azure Machine Learning"
-  | "Cognitive Services"
-  | "Virtual Network (VNet)"
-  | "Load Balancer"
-  | "VPN"
-  | "Application Gateway"
-  | "XML"
-  | "JSON"
-  | "CSV"
-  | "Binary";
-
-const ServiceNode = ({ service }: { service: ServiceType }) => {
-  switch (service) {
-    case "Web Service":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5669/5669390.png" />;
-    case "API Management":
-      return <DraggableNode name={service} imgURL="https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png" appRoles={['Proxy','Gateway','Pass-Thru']}/>;
-    case "Database":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/9850/9850812.png" appRoles={['Relation', 'Document', 'Graph', 'Vector']}/>;
-    case "Function App":
-      return <DraggableNode name={service} imgURL="https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png" />;
-    case "Cache":
-      return <DraggableNode name={service} imgURL="https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png" />;
-    case "Container App":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/860/860142.png" />;
-    case "Logic App":
-      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
-    case "Azure Machine Learning":
-      return <DraggableNode name={service} imgURL="https://ms-toolsai.gallerycdn.vsassets.io/extensions/ms-toolsai/vscode-ai/0.47.2024031809/1710754151563/Microsoft.VisualStudio.Services.Icons.Default" />;
-    case "Batch":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/4241/4241580.png" />;
-    case "Cognitive Services":
-      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_27/29_cognative-services.8e53fef966.svg" />;
-    case "Blob Storage":
-      return <DraggableNode name={service} imgURL="https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png" />;
-    case "Event Grid":
-      return <DraggableNode name={service} imgURL="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default" />;
-    case "File Share":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/1869/1869460.png" />;
-    case "Load Balancer":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5880/5880629.png" />;
-    case "Service Bus":
-      return <DraggableNode name={service} imgURL="https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315" appRoles={['Pub-Sub', 'Queue']} />;
-    case "Virtual Machines":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/11813/11813930.png" appRoles={['SFTP', 'FTP', 'Server']}/>;
-    case "Virtual Network (VNet)":
-      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
-    case "Application Gateway":
-      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
-    case "VPN":
-      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
-    case "JSON":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/6394/6394065.png" />;
-    case "XML":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5105/5105259.png" />;
-    case "CSV":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/15424/15424745.png" />;
-    case "Binary":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/1541/1541857.png" />;
-    default:
-      const exhaustiveCheck: never = service;
-      throw new Error(`Unhandled service type: ${exhaustiveCheck}`);
+const computeServiceNodes: ServiceNode[] = [
+  {
+    title: 'Web Service',
+    category: "Compute",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5669/5669390.png'
+  },
+  {
+    title: 'Function App',
+    category: 'Compute',
+    iconUrl: 'https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png'
+  },
+  {
+    title: 'Container App',
+    category: 'Compute',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/860/860142.png',
+  },
+  {
+    title: 'Virtual Machine',
+    category: "Compute",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/11813/11813930.png',
+    appRoles: ['SFTP', 'FTP', 'Server']
   }
-};
+]
+const integrationServiceNodes: ServiceNode[] = [
+  {
+    title: 'API Management',
+    category: "Integration",
+    iconUrl: 'https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png',
+    appRoles: ['Proxy', 'Gateway', 'Pass-Thru']
+  },
+  {
+    title: 'Logic App',
+    category: 'Integration',
+    iconUrl: 'https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg'
+  },
+  {
+    title: 'Event Grid',
+    category: "Compute",
+    iconUrl: 'https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default'
+  },
+  {
+    title: 'Service Bus',
+    category: "Integration",
+    iconUrl: 'https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315',
+    appRoles: ['Pub-Sub', 'Queue']
+  }
+]
+const storageServiceNodes: ServiceNode[] = [
+  {
+    title: 'Database',
+    category: "Storage",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/9850/9850812.png',
+    appRoles: ['Relation', 'Document', 'Graph', 'Vector']
+  },
+  {
+    title: 'Cache',
+    category: 'Storage',
+    iconUrl: 'https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png'
+  },
+  {
+    title: 'Blob Storage',
+    category: 'Storage',
+    iconUrl: 'https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png'
+  },
+  {
+    title: 'File Share',
+    category: 'Storage',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1869/1869460.png'
+  }
+]
+
+const networkServiceNodes: ServiceNode[] = [
+  {
+    title: 'Load Balancer',
+    category: 'Network',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5880/5880629.png',
+  },
+  {
+    title: 'Virtual Network',
+    category: 'Network',
+    iconUrl: 'https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg'
+  },
+  {
+    title: 'Application Gateway',
+    category: "Network",
+    iconUrl: 'https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg'
+  }
+]
+
+
+const dataFormatServiceNodes: ServiceNode[] = [
+  {
+    title: 'JSON',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6394/6394065.png',
+  },
+  {
+    title: 'XML',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5105/5105259.png'
+  },
+  {
+    title: 'CSV',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/15424/15424745.png'
+  },
+  {
+    title: 'Binary',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1541/1541857.png'
+  }
+]
 
 interface DraggableNodeProps {
   name: string;
-  imgURL?: string
-  appRoles?: string[]
+  imgURL: string
+  appRoles?: string[],
 }
 
 // Function to convert a string to a color
@@ -113,11 +138,12 @@ const nameToHexColor = (name: string): string => {
 
 const DraggableNode = ({ name, imgURL, appRoles }: DraggableNodeProps) => {
   const dynamicColor = nameToHexColor(name);
-  const transferData: TurboNodeData = {
+  const transferData: ServiceNode = {
     label: name,
-    iconUrl :imgURL,
+    iconUrl: imgURL,
     title: name,
-    appRole: appRoles
+    appRoles: appRoles,
+    category: 'Compute'
   };
   return (
     <div
@@ -267,8 +293,6 @@ const Sidebar = () => {
   const edges = useEdges<FlowEdge>();
   const { setNodes, setEdges } = useReactFlow<FlowNode, FlowEdge>();
 
-  
-
   return (
     <div
       style={{
@@ -281,48 +305,40 @@ const Sidebar = () => {
       }}
     >
       <h1>FlowiTec</h1>
-      {/* <FileUpload label="Load YAML" accept=".yaml,.yml" onFileChange={loadYaml} />
-      <ActionButton label="Export YAML" onClick={exportYaml} /> */}
       <div style={{ overflowY: "auto" }}>
         <CollapsibleSection title="Compute">
-          <ServiceNode service="Web Service" />
-          <ServiceNode service="Container App" />
-          <ServiceNode service="Function App" />
-          <ServiceNode service="Virtual Machines" />
-          <ServiceNode service="Batch" />
+          {computeServiceNodes.map((node) => (
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
+          ))
+          }
         </CollapsibleSection>
 
         <CollapsibleSection title="Integration">
-          <ServiceNode service="API Management" />
-          <ServiceNode service="Logic App" />
-          <ServiceNode service="Event Grid" />
-          <ServiceNode service="Service Bus" />
+          {integrationServiceNodes.map((node) => (
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
+          ))
+          }
         </CollapsibleSection>
 
         <CollapsibleSection title="Storage">
-          <ServiceNode service="Database" />
-          <ServiceNode service="Cache" />
-          <ServiceNode service="Blob Storage" />
-          <ServiceNode service="File Share" />
-        </CollapsibleSection>
-
-        <CollapsibleSection title="AI and Machine Learning">
-          <ServiceNode service="Azure Machine Learning" />
-          <ServiceNode service="Cognitive Services" />
+          {storageServiceNodes.map((node) => (
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
+          ))
+          }
         </CollapsibleSection>
 
         <CollapsibleSection title="Networking">
-          <ServiceNode service="Virtual Network (VNet)" />
-          <ServiceNode service="Load Balancer" />
-          <ServiceNode service="VPN" />
-          <ServiceNode service="Application Gateway" />
+          {networkServiceNodes.map((node) => (
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
+          ))
+          }
         </CollapsibleSection>
 
         <CollapsibleSection title="Data Formats and Files">
-          <ServiceNode service="XML" />
-          <ServiceNode service="JSON" />
-          <ServiceNode service="CSV" />
-          <ServiceNode service="Binary" />
+          {dataFormatServiceNodes.map((node) => (
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
+          ))
+          }
         </CollapsibleSection>
       </div>
 

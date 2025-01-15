@@ -19,53 +19,15 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { TransferData } from "./Types";
-import FlowNode, { TurboNodeData } from "./FlowNode";
+import CustomServiceNode, { ServiceNode } from "./CustomServiceNode";
 
 export type FlowNode = Node<{ label: string; editing: boolean }>;
 export type FlowEdge = Edge;
 
 const nodeTypes = {
-  turbo: FlowNode,
+  turbo: CustomServiceNode,
 };
-const initialNodes: Node<TurboNodeData>[] = [
-  {
-    id: '1',
-    position: { x: 0, y: 0 },
-    data: { title: 'readFile', subline: 'api.ts',label: 'Test', iconUrl: "https://cdn-icons-png.flaticon.com/512/5669/5669390.png" },
-    type: 'turbo',
-  },
-  {
-    id: '2',
-    position: { x: 250, y: 0 },
-    data: { title: 'bundle', subline: 'apiContents', appRole: ['Proxy', 'Gateway'] },
-    type: 'turbo',
-  },
-  {
-    id: '3',
-    position: { x: 0, y: 250 },
-    data: { title: 'readFile', subline: 'sdk.ts' },
-    type: 'turbo',
-  },
-  {
-    id: '4',
-    position: { x: 250, y: 250 },
-    data: { title: 'bundle', subline: 'sdkContents' },
-    type: 'turbo',
-  },
-  {
-    id: '5',
-    position: { x: 500, y: 125 },
-    data: { title: 'concat', subline: 'api, sdk' },
-    type: 'turbo',
-  },
-  {
-    id: '6',
-    position: { x: 750, y: 125 },
-    data: { title: 'fullBundle' },
-    type: 'turbo',
-  },
-];
+const initialNodes: Node<ServiceNode>[] = [];
 
 
 const Flow = () => {
@@ -171,7 +133,7 @@ const Flow = () => {
   const onDrop = useCallback<DragEventHandler>(
     (event) => {
       event.preventDefault();
-      const transferData = JSON.parse(event.dataTransfer.getData("application/reactflow")) as TurboNodeData;
+      const transferData = JSON.parse(event.dataTransfer.getData("application/reactflow")) as ServiceNode;
 
       if (!transferData) return;
 
@@ -180,11 +142,11 @@ const Flow = () => {
         y: event.clientY,
       });
 
-      const newNode: Node<TurboNodeData> = {
-        id: `${transferData.name}-${nodes.length + 1}`,
+      const newNode: Node<ServiceNode> = {
+        id: `${transferData.title}-${nodes.length + 1}`,
         type: 'turbo',
         position,
-        data: { label: `${transferData.label}`, title: transferData.title, iconUrl: transferData.iconUrl,subline: transferData.subline, appRole: transferData.appRole },
+        data: { label: `${transferData.label}`, title: transferData.title, iconUrl: transferData.iconUrl,subline: transferData.subline, appRoles: transferData.appRoles,category: "Compute" },
       };
 
       setNodes((nds) => nds.concat(newNode));
