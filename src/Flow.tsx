@@ -19,13 +19,19 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { TransferData } from "./Types";
+import CustomServiceNode, { ServiceNode } from "./CustomServiceNode";
 
 export type FlowNode = Node<{ label: string; editing: boolean }>;
 export type FlowEdge = Edge;
 
+const nodeTypes = {
+  turbo: CustomServiceNode,
+};
+const initialNodes: Node<ServiceNode>[] = [];
+
+
 const Flow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState<FlowNode>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState<FlowEdge>([]);
   const { screenToFlowPosition } = useReactFlow();
 
@@ -91,7 +97,7 @@ const Flow = () => {
             ...node,
             data: {
               ...node.data,
-              label: newName,
+              title: newName,
             },
           }
           : node
@@ -127,7 +133,7 @@ const Flow = () => {
   const onDrop = useCallback<DragEventHandler>(
     (event) => {
       event.preventDefault();
-      const transferData = JSON.parse(event.dataTransfer.getData("application/reactflow")) as TransferData;
+      const transferData = JSON.parse(event.dataTransfer.getData("application/reactflow")) as ServiceNode;
 
       if (!transferData) return;
 
@@ -136,13 +142,11 @@ const Flow = () => {
         y: event.clientY,
       });
 
-      const newNode: FlowNode = {
-        id: `${transferData.name}-${nodes.length + 1}`,
-        type: transferData.name,
+      const newNode: Node<ServiceNode> = {
+        id: `${transferData.title}-${nodes.length + 1}`,
+        type: 'turbo',
         position,
-        data: { label: `${transferData.name}`, editing: false },
-        className: transferData.name.trim().toLocaleLowerCase().replace(/\s/g, ''),
-        style: { background: transferData.color }
+        data: { label: `${transferData.label}`, title: transferData.title, iconUrl: transferData.iconUrl,subline: transferData.subline, appRoles: transferData.appRoles,category: "Compute" },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -197,10 +201,10 @@ const Flow = () => {
           ...node,
           data: {
             ...node.data,
-            label: node.data.editing ? (
+            title: node.data.editing ? (
               <input
                 type="text"
-                value={node.data.label}
+                value={node.data.title}
                 onChange={(e) => handleNameChange(e, node.id)}
                 onBlur={() => handleBlur(node.id)}
                 onKeyDown={(e) => handleKeyDown(e, node.id)}
@@ -208,7 +212,7 @@ const Flow = () => {
                 style={{ width: "100px" }}
               />
             ) : (
-              node.data.label
+              node.data.title
             ),
           },
         }))}
@@ -220,6 +224,7 @@ const Flow = () => {
         style={{ width: "100%", height: "100%" }}
         onNodeClick={handleNodeClick}
         onEdgeClick={handleEdgeClick}
+        nodeTypes={nodeTypes}
       >
         <Controls />
         <Background />

@@ -1,100 +1,134 @@
 import { useEdges, useNodes, useReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import YAML from "js-yaml";
 import React, { useState } from "react";
 import { FlowEdge, FlowNode } from "./Flow";
-import { TransferData } from "./Types";
+import { ServiceCategory, ServiceNode } from "./CustomServiceNode";
 
-type FlowYaml = {
-  flow: Array<{
-    name: string;
-    position: { x: number; y: number };
-    dependsOn: string[];
-  }>;
-};
 
-type ServiceType =
-  | "Web Service"
-  | "API Management"
-  | "Database"
-  | "Function App"
-  | "Cache"
-  | "Container App"
-  | "Logic App"
-  | "Virtual Machines"
-  | "Batch"
-  | "Event Grid"
-  | "Service Bus"
-  | "Blob Storage"
-  | "File Share"
-  | "Azure Machine Learning"
-  | "Cognitive Services"
-  | "Virtual Network (VNet)"
-  | "Load Balancer"
-  | "VPN"
-  | "Application Gateway"
-  | "XML"
-  | "JSON"
-  | "CSV"
-  | "Binary";
-
-const ServiceNode = ({ service }: { service: ServiceType }) => {
-  switch (service) {
-    case "Web Service":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5669/5669390.png" />;
-    case "API Management":
-      return <DraggableNode name={service} imgURL="https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png" />;
-    case "Database":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/9850/9850812.png" />;
-    case "Function App":
-      return <DraggableNode name={service} imgURL="https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png" />;
-    case "Cache":
-      return <DraggableNode name={service} imgURL="https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png" />;
-    case "Container App":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/860/860142.png" />;
-    case "Logic App":
-      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg" />;
-    case "Azure Machine Learning":
-      return <DraggableNode name={service} imgURL="https://ms-toolsai.gallerycdn.vsassets.io/extensions/ms-toolsai/vscode-ai/0.47.2024031809/1710754151563/Microsoft.VisualStudio.Services.Icons.Default" />;
-    case "Batch":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/4241/4241580.png" />;
-    case "Cognitive Services":
-      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_27/29_cognative-services.8e53fef966.svg" />;
-    case "Blob Storage":
-      return <DraggableNode name={service} imgURL="https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png" />;
-    case "Event Grid":
-      return <DraggableNode name={service} imgURL="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default" />;
-    case "File Share":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/1869/1869460.png" />;
-    case "Load Balancer":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5880/5880629.png" />;
-    case "Service Bus":
-      return <DraggableNode name={service} imgURL="https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315" />;
-    case "Virtual Machines":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/11813/11813930.png" />;
-    case "Virtual Network (VNet)":
-      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
-    case "Application Gateway":
-      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
-    case "VPN":
-      return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
-    case "JSON":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/6394/6394065.png" />;
-    case "XML":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5105/5105259.png" />;
-    case "CSV":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/15424/15424745.png" />;
-    case "Binary":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/1541/1541857.png" />;
-    default:
-      const exhaustiveCheck: never = service;
-      throw new Error(`Unhandled service type: ${exhaustiveCheck}`);
+const computeServiceNodes: ServiceNode[] = [
+  {
+    title: 'Web Service',
+    category: "Compute",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/10838/10838328.png'
+  },
+  {
+    title: 'Function App',
+    category: 'Compute',
+    iconUrl: 'https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png'
+  },
+  {
+    title: 'Container App',
+    category: 'Compute',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/860/860142.png',
+  },
+  {
+    title: 'Virtual Machine',
+    category: "Compute",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/11813/11813930.png',
+    appRoles: ['SFTP', 'FTP', 'Server']
+  },
+  {
+    title: 'Application',
+    category: "Compute",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5669/5669390.png',
+    appRoles: ['SaaS', 'PasS', 'On-Prem']
   }
-};
+]
+const integrationServiceNodes: ServiceNode[] = [
+  {
+    title: 'API Management',
+    category: "Integration",
+    iconUrl: 'https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png',
+    appRoles: ['Proxy', 'Gateway', 'Pass-Thru']
+  },
+  {
+    title: 'Logic App',
+    category: 'Integration',
+    iconUrl: 'https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg'
+  },
+  {
+    title: 'Event Grid',
+    category: "Integration",
+    iconUrl: 'https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default'
+  },
+  {
+    title: 'Service Bus',
+    category: "Integration",
+    iconUrl: 'https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315',
+    appRoles: ['Pub-Sub', 'Queue']
+  }
+]
+const storageServiceNodes: ServiceNode[] = [
+  {
+    title: 'Database',
+    category: "Storage",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/9850/9850812.png',
+    appRoles: ['Relation', 'Document', 'Graph', 'Vector']
+  },
+  {
+    title: 'Cache',
+    category: 'Storage',
+    iconUrl: 'https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png'
+  },
+  {
+    title: 'Blob Storage',
+    category: 'Storage',
+    iconUrl: 'https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png'
+  },
+  {
+    title: 'File Share',
+    category: 'Storage',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1869/1869460.png'
+  }
+]
+
+const networkServiceNodes: ServiceNode[] = [
+  {
+    title: 'Load Balancer',
+    category: 'Network',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5880/5880629.png',
+  },
+  {
+    title: 'Virtual Network',
+    category: 'Network',
+    iconUrl: 'https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg'
+  },
+  {
+    title: 'Application Gateway',
+    category: "Network",
+    iconUrl: 'https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg'
+  }
+]
+
+
+const dataFormatServiceNodes: ServiceNode[] = [
+  {
+    title: 'JSON',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6394/6394065.png',
+  },
+  {
+    title: 'XML',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5105/5105259.png'
+  },
+  {
+    title: 'CSV',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/15424/15424745.png'
+  },
+  {
+    title: 'Binary',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1541/1541857.png'
+  }
+]
 
 interface DraggableNodeProps {
   name: string;
-  imgURL?: string
+  imgURL: string
+  appRoles?: string[],
+  category: ServiceCategory
 }
 
 // Function to convert a string to a color
@@ -109,234 +143,194 @@ const nameToHexColor = (name: string): string => {
   return color.slice(0, 7); // Ensure it's a valid 6-character hex color
 };
 
-const DraggableNode = ({ name, imgURL }: DraggableNodeProps) => {
-  const dynamicColor = nameToHexColor(name);
-  const transferData: TransferData = {
-    name,
-    imgURL,
-    color: dynamicColor
+const DraggableNode = ({ name, imgURL, appRoles, category }: DraggableNodeProps) => {
+  const dynamicColor = nameToHexColor(category);
+  const transferData: ServiceNode = {
+    label: name,
+    iconUrl: imgURL,
+    title: name,
+    appRoles: appRoles,
+    category: category
   };
   return (
     <div
       draggable
       onDragStart={(event) =>
-        event.dataTransfer.setData("application/reactflow", JSON.stringify(transferData))
+        event.dataTransfer.setData('application/reactflow', JSON.stringify(transferData))
       }
       style={{
-        padding: "10px",
-        background: nameToHexColor(name),
-        color: "white",
-        borderRadius: "5px",
-        textAlign: "center",
-        cursor: "grab",
+        padding: '10px 15px',
+        background: `linear-gradient(135deg, ${dynamicColor}, ${shadeColor(dynamicColor, -30)})`,
+        color: '#ffffff',
+        borderRadius: '12px',
+        textAlign: 'center',
+        cursor: 'grab',
+        boxShadow: `0 0 15px ${dynamicColor}`,
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      {name}
-      {imgURL && <img src={imgURL} alt={name} draggable="false" width="30" />}
+      <span style={{ fontWeight: 'bold', fontSize: '14px' }}>{name}</span>
+      {imgURL && (
+        <img
+          src={imgURL}
+          alt={name}
+          draggable="false"
+          width="30"
+          style={{
+            position: 'absolute',
+            top: '5px',
+            right: '5px',
+            border: '2px solid #ffffff',
+            borderRadius: '50%',
+            boxShadow: `0 0 8px ${dynamicColor}`,
+            background: '#1f1f1f',
+            padding: '2px',
+          }}
+        />
+      )}
     </div>
   );
 };
 
-const CollapsibleSection = ({
+// Utility function to slightly darken or lighten a hex color
+const shadeColor = (color: string, percent: number): string => {
+  const num = parseInt(color.slice(1), 16),
+    amt = Math.round(2.55 * percent),
+    r = (num >> 16) + amt,
+    g = ((num >> 8) & 0x00ff) + amt,
+    b = (num & 0x0000ff) + amt;
+  return `#${(0x1000000 + (r < 255 ? (r < 1 ? 0 : r) : 255) * 0x10000 + (g < 255 ? (g < 1 ? 0 : g) : 255) * 0x100 + (b < 255 ? (b < 1 ? 0 : b) : 255))
+    .toString(16)
+    .slice(1)}`;
+};
+
+const CollapsibleSection: React.FC<{ title: string; children: React.ReactNode }> = ({
   title,
   children,
-}: {
-  title: string;
-  children: React.ReactNode;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
+    <div style={sectionStyle}>
       <div
         onClick={() => setIsOpen(!isOpen)}
         style={{
-          cursor: "pointer",
-          fontWeight: "bold",
-          padding: "5px",
-          background: "#e0e0e0",
-          borderRadius: "5px",
+          ...titleStyle,
+          boxShadow: isOpen
+            ? '0 0 15px rgba(0, 200, 255, 0.7)'
+            : '0 0 8px rgba(0, 200, 255, 0.5)',
         }}
       >
-        {title} {isOpen ? "▼" : "▲"}
+        {title} <span style={arrowStyle}>{isOpen ? '▼' : '▲'}</span>
       </div>
-      {isOpen && <div style={{ paddingLeft: "10px", marginTop: "5px" }}>{children}</div>}
+      {isOpen && <div style={contentStyle}>{children}</div>}
     </div>
   );
 };
-interface FileUploadProps {
-  label: string;
-  accept: string;
-  onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
 
-const FileUpload: React.FC<FileUploadProps> = ({ label, accept, onFileChange }) => (
-  <div>
-    <label htmlFor="fileUpload" style={{ cursor: "pointer", color: "#007acc" }}>
-      <b>{label}</b>
-    </label>
-    <input
-      type="file"
-      id="fileUpload"
-      accept={accept}
-      style={{ display: "none" }}
-      onChange={onFileChange}
-    />
-  </div>
-);
 
-interface ButtonProps {
-  label: string;
-  onClick: () => void;
-}
+// Styles
+const sectionStyle: React.CSSProperties = {
+  marginBottom: '15px',
+  border: '2px solid #00c8ff',
+  borderRadius: '12px',
+  overflow: 'hidden',
+  boxShadow: '0 0 10px rgba(0, 200, 255, 0.5)',
+};
 
-const ActionButton: React.FC<ButtonProps> = ({ label, onClick }) => (
-  <button onClick={onClick} style={{ cursor: "pointer", color: "#007acc" }}>
-    {label}
-  </button>
-);
+const titleStyle: React.CSSProperties = {
+  cursor: 'pointer',
+  fontWeight: 'bold',
+  fontSize: '16px',
+  padding: '10px',
+  background: 'linear-gradient(135deg, #1f1f1f, #3f3f3f)',
+  color: '#ffffff',
+  borderRadius: '12px 12px 0 0',
+  textAlign: 'center',
+  transition: 'box-shadow 0.3s ease',
+};
+
+const arrowStyle: React.CSSProperties = {
+  fontSize: '14px',
+  color: '#00c8ff',
+};
+
+const contentStyle: React.CSSProperties = {
+  padding: '10px',
+  background: '#1f1f1f',
+  color: '#ffffff',
+  fontSize: '14px',
+  borderTop: '1px solid rgba(0, 200, 255, 0.5)',
+};
 
 const Sidebar = () => {
-  const nodes = useNodes<FlowNode>();
-  const edges = useEdges<FlowEdge>();
-  const { setNodes, setEdges } = useReactFlow<FlowNode, FlowEdge>();
-
-  const loadYaml = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files?.length) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        try {
-          const content = e.target?.result as string;
-
-          const igContext = YAML.load(content) as FlowYaml;
-
-          if (igContext && igContext.flow) {
-            const newNodes: FlowNode[] = [];
-            const nodesMap: Record<string, FlowNode> = {};
-
-            igContext.flow.forEach((component: any, index: number) => {
-              const position = component.position || { x: 250, y: 150 * index };
-              nodesMap[component.name] = position;
-
-              newNodes.push({
-                id: component.name,
-                data: { label: component.name, editing: false },
-                position,
-                style: component.optional
-                  ? { border: "2px dashed gray" }
-                  : { border: "1px solid #333" },
-              });
-            });
-
-            const newEdges = igContext.flow
-              .filter((component) => component.dependsOn)
-              .flatMap((component) =>
-                component.dependsOn.map((dependency) => ({
-                  id: `${dependency}-${component.name}`,
-                  source: dependency,
-                  target: component.name,
-                  animated: true,
-                }))
-              );
-
-            setNodes(newNodes);
-            setEdges(newEdges);
-          }
-        } catch (error) {
-          console.error("Error parsing YAML:", error);
-        }
-      };
-
-      reader.readAsText(file);
-    }
-  };
-
-  const exportYaml = () => {
-    const flow = nodes.map((node) => {
-      const dependsOn = edges
-        .filter((edge) => edge.target === node.id)
-        .map((edge) => edge.source);
-
-      return {
-        name: node.id,
-        position: { x: node.position.x, y: node.position.y },
-        ...(dependsOn.length > 0 && { dependsOn }),
-      };
-    });
-
-    const yamlString = YAML.dump({ flow });
-
-    const blob = new Blob([yamlString], { type: "text/yaml" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "flow.yaml";
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-
   return (
-    <div
-      style={{
-        width: "20%",
-        padding: "10px",
-        background: "#f4f4f4",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-      }}
-    >
-      <h1>FlowiTec</h1>
-      {/* <FileUpload label="Load YAML" accept=".yaml,.yml" onFileChange={loadYaml} />
-      <ActionButton label="Export YAML" onClick={exportYaml} /> */}
-      <div style={{ overflowY: "auto" }}>
+    <div style={sidebarStyle}>
+      <h1 style={headerStyle}>FlowiTec</h1>
+      <div style={sectionContainerStyle}>
         <CollapsibleSection title="Compute">
-          <ServiceNode service="Web Service" />
-          <ServiceNode service="Container App" />
-          <ServiceNode service="Function App" />
-          <ServiceNode service="Virtual Machines" />
-          <ServiceNode service="Batch" />
+          {computeServiceNodes.map((node) => (
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
+          ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Integration">
-          <ServiceNode service="API Management" />
-          <ServiceNode service="Logic App" />
-          <ServiceNode service="Event Grid" />
-          <ServiceNode service="Service Bus" />
+          {integrationServiceNodes.map((node) => (
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Storage">
-          <ServiceNode service="Database" />
-          <ServiceNode service="Cache" />
-          <ServiceNode service="Blob Storage" />
-          <ServiceNode service="File Share" />
-        </CollapsibleSection>
-
-        <CollapsibleSection title="AI and Machine Learning">
-          <ServiceNode service="Azure Machine Learning" />
-          <ServiceNode service="Cognitive Services" />
+          {storageServiceNodes.map((node) => (
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Networking">
-          <ServiceNode service="Virtual Network (VNet)" />
-          <ServiceNode service="Load Balancer" />
-          <ServiceNode service="VPN" />
-          <ServiceNode service="Application Gateway" />
+          {networkServiceNodes.map((node) => (
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Data Formats and Files">
-          <ServiceNode service="XML" />
-          <ServiceNode service="JSON" />
-          <ServiceNode service="CSV" />
-          <ServiceNode service="Binary" />
+          {dataFormatServiceNodes.map((node) => (
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          ))}
         </CollapsibleSection>
       </div>
-
-
     </div>
   );
 };
 
 export default Sidebar;
+
+// Styles
+const sidebarStyle: React.CSSProperties = {
+  width: '20%',
+  padding: '15px',
+  background: 'linear-gradient(135deg, #1f1f1f, #3f3f3f)',
+  boxShadow: '0 0 20px rgba(0, 200, 255, 0.6)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '15px',
+  color: '#ffffff',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const headerStyle: React.CSSProperties = {
+  fontSize: '24px',
+  fontWeight: 'bold',
+  textAlign: 'center',
+  color: '#00c8ff',
+  marginBottom: '20px',
+};
+
+const sectionContainerStyle: React.CSSProperties = {
+  overflowY: 'auto',
+  maxHeight: 'calc(100vh - 100px)',
+  paddingRight: '10px',
+  scrollbarWidth: 'thin',
+  scrollbarColor: '#00c8ff #1f1f1f',
+};
+
