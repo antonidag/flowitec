@@ -20,12 +20,56 @@ import React, {
   useState,
 } from "react";
 import { TransferData } from "./Types";
+import FlowNode, { TurboNodeData } from "./FlowNode";
 
 export type FlowNode = Node<{ label: string; editing: boolean }>;
 export type FlowEdge = Edge;
 
+const nodeTypes = {
+  turbo: FlowNode,
+};
+const initialNodes: Node<TurboNodeData>[] = [
+  {
+    id: '1',
+    position: { x: 0, y: 0 },
+    data: { title: 'readFile', subline: 'api.ts',label: 'Test', iconUrl: "https://cdn-icons-png.flaticon.com/512/5669/5669390.png" },
+    type: 'turbo',
+  },
+  {
+    id: '2',
+    position: { x: 250, y: 0 },
+    data: { title: 'bundle', subline: 'apiContents' },
+    type: 'turbo',
+  },
+  {
+    id: '3',
+    position: { x: 0, y: 250 },
+    data: { title: 'readFile', subline: 'sdk.ts' },
+    type: 'turbo',
+  },
+  {
+    id: '4',
+    position: { x: 250, y: 250 },
+    data: { title: 'bundle', subline: 'sdkContents' },
+    type: 'turbo',
+  },
+  {
+    id: '5',
+    position: { x: 500, y: 125 },
+    data: { title: 'concat', subline: 'api, sdk' },
+    type: 'turbo',
+  },
+  {
+    id: '6',
+    position: { x: 750, y: 125 },
+    data: { title: 'fullBundle' },
+    type: 'turbo',
+  },
+];
+
+
 const Flow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState<FlowNode>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState<FlowEdge>([]);
   const { screenToFlowPosition } = useReactFlow();
 
@@ -220,6 +264,7 @@ const Flow = () => {
         style={{ width: "100%", height: "100%" }}
         onNodeClick={handleNodeClick}
         onEdgeClick={handleEdgeClick}
+        nodeTypes={nodeTypes}
       >
         <Controls />
         <Background />
