@@ -256,37 +256,6 @@ const contentStyle: React.CSSProperties = {
   fontSize: '14px',
   borderTop: '1px solid rgba(0, 200, 255, 0.5)',
 };
-interface FileUploadProps {
-  label: string;
-  accept: string;
-  onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const FileUpload: React.FC<FileUploadProps> = ({ label, accept, onFileChange }) => (
-  <div>
-    <label htmlFor="fileUpload" style={{ cursor: "pointer", color: "#007acc" }}>
-      <b>{label}</b>
-    </label>
-    <input
-      type="file"
-      id="fileUpload"
-      accept={accept}
-      style={{ display: "none" }}
-      onChange={onFileChange}
-    />
-  </div>
-);
-
-interface ButtonProps {
-  label: string;
-  onClick: () => void;
-}
-
-const ActionButton: React.FC<ButtonProps> = ({ label, onClick }) => (
-  <button onClick={onClick} style={{ cursor: "pointer", color: "#007acc" }}>
-    {label}
-  </button>
-);
 
 const Sidebar = () => {
   const nodes = useNodes<FlowNode>();
@@ -294,57 +263,71 @@ const Sidebar = () => {
   const { setNodes, setEdges } = useReactFlow<FlowNode, FlowEdge>();
 
   return (
-    <div
-      style={{
-        width: "20%",
-        padding: "10px",
-        background: "#f4f4f4",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-      }}
-    >
-      <h1>FlowiTec</h1>
-      <div style={{ overflowY: "auto" }}>
+    <div style={sidebarStyle}>
+      <h1 style={headerStyle}>FlowiTec</h1>
+      <div style={sectionContainerStyle}>
         <CollapsibleSection title="Compute">
           {computeServiceNodes.map((node) => (
             <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
-          ))
-          }
+          ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Integration">
           {integrationServiceNodes.map((node) => (
             <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
-          ))
-          }
+          ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Storage">
           {storageServiceNodes.map((node) => (
             <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
-          ))
-          }
+          ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Networking">
           {networkServiceNodes.map((node) => (
             <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
-          ))
-          }
+          ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Data Formats and Files">
           {dataFormatServiceNodes.map((node) => (
             <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
-          ))
-          }
+          ))}
         </CollapsibleSection>
       </div>
-
-
     </div>
   );
 };
 
 export default Sidebar;
+
+// Styles
+const sidebarStyle: React.CSSProperties = {
+  width: '20%',
+  padding: '15px',
+  background: 'linear-gradient(135deg, #1f1f1f, #3f3f3f)',
+  boxShadow: '0 0 20px rgba(0, 200, 255, 0.6)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '15px',
+  color: '#ffffff',
+  fontFamily: 'Arial, sans-serif',
+};
+
+const headerStyle: React.CSSProperties = {
+  fontSize: '24px',
+  fontWeight: 'bold',
+  textAlign: 'center',
+  color: '#00c8ff',
+  marginBottom: '20px',
+};
+
+const sectionContainerStyle: React.CSSProperties = {
+  overflowY: 'auto',
+  maxHeight: 'calc(100vh - 100px)',
+  paddingRight: '10px',
+  scrollbarWidth: 'thin',
+  scrollbarColor: '#00c8ff #1f1f1f',
+};
+
