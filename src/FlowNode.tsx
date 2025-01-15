@@ -1,4 +1,4 @@
-import React, { memo, type ReactNode } from 'react';
+import React, { memo } from 'react';
  
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react';
  
@@ -40,8 +40,8 @@ const iconStyle: React.CSSProperties = {
   position: 'absolute',
   top: '-15px', // Position above the node
   right: '-15px', // Position to the right of the node
-  width: '30px',
-  height: '30px',
+  width: '40px',
+  height: '40px',
   objectFit: 'contain'
 };
 

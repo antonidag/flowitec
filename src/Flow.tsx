@@ -180,13 +180,11 @@ const Flow = () => {
         y: event.clientY,
       });
 
-      const newNode: FlowNode = {
+      const newNode: Node<TurboNodeData> = {
         id: `${transferData.name}-${nodes.length + 1}`,
-        type: transferData.name,
+        type: 'turbo',
         position,
-        data: { label: `${transferData.name}`, editing: false },
-        className: transferData.name.trim().toLocaleLowerCase().replace(/\s/g, ''),
-        style: { background: transferData.color }
+        data: { label: `${transferData.name}`, title: transferData.name, iconUrl: transferData.imgURL,subline: transferData.name },
       };
 
       setNodes((nds) => nds.concat(newNode));
