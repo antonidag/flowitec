@@ -2,14 +2,14 @@ import { useEdges, useNodes, useReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, { useState } from "react";
 import { FlowEdge, FlowNode } from "./Flow";
-import { ServiceNode } from "./CustomServiceNode";
+import { ServiceCategory, ServiceNode } from "./CustomServiceNode";
 
 
 const computeServiceNodes: ServiceNode[] = [
   {
     title: 'Web Service',
     category: "Compute",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5669/5669390.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/10838/10838328.png'
   },
   {
     title: 'Function App',
@@ -26,6 +26,12 @@ const computeServiceNodes: ServiceNode[] = [
     category: "Compute",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/11813/11813930.png',
     appRoles: ['SFTP', 'FTP', 'Server']
+  },
+  {
+    title: 'Application',
+    category: "Compute",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5669/5669390.png',
+    appRoles: ['SaaS', 'PasS', 'On-Prem']
   }
 ]
 const integrationServiceNodes: ServiceNode[] = [
@@ -42,7 +48,7 @@ const integrationServiceNodes: ServiceNode[] = [
   },
   {
     title: 'Event Grid',
-    category: "Compute",
+    category: "Integration",
     iconUrl: 'https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default'
   },
   {
@@ -122,6 +128,7 @@ interface DraggableNodeProps {
   name: string;
   imgURL: string
   appRoles?: string[],
+  category: ServiceCategory
 }
 
 // Function to convert a string to a color
@@ -136,14 +143,14 @@ const nameToHexColor = (name: string): string => {
   return color.slice(0, 7); // Ensure it's a valid 6-character hex color
 };
 
-const DraggableNode = ({ name, imgURL, appRoles }: DraggableNodeProps) => {
-  const dynamicColor = nameToHexColor(name);
+const DraggableNode = ({ name, imgURL, appRoles, category }: DraggableNodeProps) => {
+  const dynamicColor = nameToHexColor(category);
   const transferData: ServiceNode = {
     label: name,
     iconUrl: imgURL,
     title: name,
     appRoles: appRoles,
-    category: 'Compute'
+    category: category
   };
   return (
     <div
@@ -264,31 +271,31 @@ const Sidebar = () => {
       <div style={sectionContainerStyle}>
         <CollapsibleSection title="Compute">
           {computeServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Integration">
           {integrationServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Storage">
           {storageServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Networking">
           {networkServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Data Formats and Files">
           {dataFormatServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} />
+            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
           ))}
         </CollapsibleSection>
       </div>

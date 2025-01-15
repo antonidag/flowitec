@@ -97,7 +97,7 @@ const Flow = () => {
             ...node,
             data: {
               ...node.data,
-              label: newName,
+              title: newName,
             },
           }
           : node
@@ -201,10 +201,10 @@ const Flow = () => {
           ...node,
           data: {
             ...node.data,
-            label: node.data.editing ? (
+            title: node.data.editing ? (
               <input
                 type="text"
-                value={node.data.label}
+                value={node.data.title}
                 onChange={(e) => handleNameChange(e, node.id)}
                 onBlur={() => handleBlur(node.id)}
                 onKeyDown={(e) => handleKeyDown(e, node.id)}
@@ -212,7 +212,7 @@ const Flow = () => {
                 style={{ width: "100px" }}
               />
             ) : (
-              node.data.label
+              node.data.title
             ),
           },
         }))}
