@@ -1,21 +1,36 @@
 import React, { memo } from 'react';
- 
+
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react';
- 
+
 export type TurboNodeData = {
   title: string;
   subline?: string;
   label: string;
   iconUrl?: string; // Optional property for the icon URL
+  appRole?: string[]; // Updated to explicitly type the appRole as an array of strings
 };
- 
+
 export default memo(({ data }: NodeProps<Node<TurboNodeData>>) => {
   return (
     <div style={nodeStyle}>
       {data.iconUrl && <img src={data.iconUrl} alt="Icon" style={iconStyle} />}
       <div style={titleStyle}>{data.title}</div>
-      {data.subline && <div style={sublineStyle}>{data.subline}</div>}
       <div style={labelStyle}>{data.label}</div>
+      {data.subline && <div style={sublineStyle}>{data.subline}</div>}
+
+      {data.appRole && (
+        <div>
+          <label htmlFor="app_role">Act as:</label>
+          <select name="app_role" id="app_role">
+            {data.appRole.map((role, index) => (
+              <option key={index} value={role}>
+                {role}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       <Handle type="target" position={Position.Top} style={handleStyle} />
       <Handle type="source" position={Position.Bottom} style={handleStyle} />
     </div>

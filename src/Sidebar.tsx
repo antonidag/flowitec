@@ -4,6 +4,7 @@ import YAML from "js-yaml";
 import React, { useState } from "react";
 import { FlowEdge, FlowNode } from "./Flow";
 import { TransferData } from "./Types";
+import { TurboNodeData } from "./FlowNode";
 
 type FlowYaml = {
   flow: Array<{
@@ -43,9 +44,9 @@ const ServiceNode = ({ service }: { service: ServiceType }) => {
     case "Web Service":
       return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5669/5669390.png" />;
     case "API Management":
-      return <DraggableNode name={service} imgURL="https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png" appRoles={['Proxy','Gateway','Pass-Thru']}/>;
     case "Database":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/9850/9850812.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/9850/9850812.png" appRoles={['Relation', 'Document', 'Graph', 'Vector']}/>;
     case "Function App":
       return <DraggableNode name={service} imgURL="https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png" />;
     case "Cache":
@@ -69,9 +70,9 @@ const ServiceNode = ({ service }: { service: ServiceType }) => {
     case "Load Balancer":
       return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/5880/5880629.png" />;
     case "Service Bus":
-      return <DraggableNode name={service} imgURL="https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315" />;
+      return <DraggableNode name={service} imgURL="https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315" appRoles={['Pub-Sub', 'Queue']} />;
     case "Virtual Machines":
-      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/11813/11813930.png" />;
+      return <DraggableNode name={service} imgURL="https://cdn-icons-png.flaticon.com/512/11813/11813930.png" appRoles={['SFTP', 'FTP', 'Server']}/>;
     case "Virtual Network (VNet)":
       return <DraggableNode name={service} imgURL="https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg" />;
     case "Application Gateway":
@@ -95,6 +96,7 @@ const ServiceNode = ({ service }: { service: ServiceType }) => {
 interface DraggableNodeProps {
   name: string;
   imgURL?: string
+  appRoles?: string[]
 }
 
 // Function to convert a string to a color
@@ -109,60 +111,124 @@ const nameToHexColor = (name: string): string => {
   return color.slice(0, 7); // Ensure it's a valid 6-character hex color
 };
 
-const DraggableNode = ({ name, imgURL }: DraggableNodeProps) => {
+const DraggableNode = ({ name, imgURL, appRoles }: DraggableNodeProps) => {
   const dynamicColor = nameToHexColor(name);
-  const transferData: TransferData = {
-    name,
-    imgURL,
-    color: dynamicColor
+  const transferData: TurboNodeData = {
+    label: name,
+    iconUrl :imgURL,
+    title: name,
+    appRole: appRoles
   };
   return (
     <div
       draggable
       onDragStart={(event) =>
-        event.dataTransfer.setData("application/reactflow", JSON.stringify(transferData))
+        event.dataTransfer.setData('application/reactflow', JSON.stringify(transferData))
       }
       style={{
-        padding: "10px",
-        background: nameToHexColor(name),
-        color: "white",
-        borderRadius: "5px",
-        textAlign: "center",
-        cursor: "grab",
+        padding: '10px 15px',
+        background: `linear-gradient(135deg, ${dynamicColor}, ${shadeColor(dynamicColor, -30)})`,
+        color: '#ffffff',
+        borderRadius: '12px',
+        textAlign: 'center',
+        cursor: 'grab',
+        boxShadow: `0 0 15px ${dynamicColor}`,
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      {name}
-      {imgURL && <img src={imgURL} alt={name} draggable="false" width="30" />}
+      <span style={{ fontWeight: 'bold', fontSize: '14px' }}>{name}</span>
+      {imgURL && (
+        <img
+          src={imgURL}
+          alt={name}
+          draggable="false"
+          width="30"
+          style={{
+            position: 'absolute',
+            top: '5px',
+            right: '5px',
+            border: '2px solid #ffffff',
+            borderRadius: '50%',
+            boxShadow: `0 0 8px ${dynamicColor}`,
+            background: '#1f1f1f',
+            padding: '2px',
+          }}
+        />
+      )}
     </div>
   );
 };
 
-const CollapsibleSection = ({
+// Utility function to slightly darken or lighten a hex color
+const shadeColor = (color: string, percent: number): string => {
+  const num = parseInt(color.slice(1), 16),
+    amt = Math.round(2.55 * percent),
+    r = (num >> 16) + amt,
+    g = ((num >> 8) & 0x00ff) + amt,
+    b = (num & 0x0000ff) + amt;
+  return `#${(0x1000000 + (r < 255 ? (r < 1 ? 0 : r) : 255) * 0x10000 + (g < 255 ? (g < 1 ? 0 : g) : 255) * 0x100 + (b < 255 ? (b < 1 ? 0 : b) : 255))
+    .toString(16)
+    .slice(1)}`;
+};
+
+const CollapsibleSection: React.FC<{ title: string; children: React.ReactNode }> = ({
   title,
   children,
-}: {
-  title: string;
-  children: React.ReactNode;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
+    <div style={sectionStyle}>
       <div
         onClick={() => setIsOpen(!isOpen)}
         style={{
-          cursor: "pointer",
-          fontWeight: "bold",
-          padding: "5px",
-          background: "#e0e0e0",
-          borderRadius: "5px",
+          ...titleStyle,
+          boxShadow: isOpen
+            ? '0 0 15px rgba(0, 200, 255, 0.7)'
+            : '0 0 8px rgba(0, 200, 255, 0.5)',
         }}
       >
-        {title} {isOpen ? "▼" : "▲"}
+        {title} <span style={arrowStyle}>{isOpen ? '▼' : '▲'}</span>
       </div>
-      {isOpen && <div style={{ paddingLeft: "10px", marginTop: "5px" }}>{children}</div>}
+      {isOpen && <div style={contentStyle}>{children}</div>}
     </div>
   );
+};
+
+
+// Styles
+const sectionStyle: React.CSSProperties = {
+  marginBottom: '15px',
+  border: '2px solid #00c8ff',
+  borderRadius: '12px',
+  overflow: 'hidden',
+  boxShadow: '0 0 10px rgba(0, 200, 255, 0.5)',
+};
+
+const titleStyle: React.CSSProperties = {
+  cursor: 'pointer',
+  fontWeight: 'bold',
+  fontSize: '16px',
+  padding: '10px',
+  background: 'linear-gradient(135deg, #1f1f1f, #3f3f3f)',
+  color: '#ffffff',
+  borderRadius: '12px 12px 0 0',
+  textAlign: 'center',
+  transition: 'box-shadow 0.3s ease',
+};
+
+const arrowStyle: React.CSSProperties = {
+  fontSize: '14px',
+  color: '#00c8ff',
+};
+
+const contentStyle: React.CSSProperties = {
+  padding: '10px',
+  background: '#1f1f1f',
+  color: '#ffffff',
+  fontSize: '14px',
+  borderTop: '1px solid rgba(0, 200, 255, 0.5)',
 };
 interface FileUploadProps {
   label: string;

@@ -38,7 +38,7 @@ const initialNodes: Node<TurboNodeData>[] = [
   {
     id: '2',
     position: { x: 250, y: 0 },
-    data: { title: 'bundle', subline: 'apiContents' },
+    data: { title: 'bundle', subline: 'apiContents', appRole: ['Proxy', 'Gateway'] },
     type: 'turbo',
   },
   {
@@ -171,7 +171,7 @@ const Flow = () => {
   const onDrop = useCallback<DragEventHandler>(
     (event) => {
       event.preventDefault();
-      const transferData = JSON.parse(event.dataTransfer.getData("application/reactflow")) as TransferData;
+      const transferData = JSON.parse(event.dataTransfer.getData("application/reactflow")) as TurboNodeData;
 
       if (!transferData) return;
 
@@ -184,7 +184,7 @@ const Flow = () => {
         id: `${transferData.name}-${nodes.length + 1}`,
         type: 'turbo',
         position,
-        data: { label: `${transferData.name}`, title: transferData.name, iconUrl: transferData.imgURL,subline: transferData.name },
+        data: { label: `${transferData.label}`, title: transferData.title, iconUrl: transferData.iconUrl,subline: transferData.subline, appRole: transferData.appRole },
       };
 
       setNodes((nds) => nds.concat(newNode));
