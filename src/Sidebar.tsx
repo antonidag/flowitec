@@ -268,32 +268,32 @@ const Sidebar = () => {
       <h1 style={headerStyle}>FlowiTec</h1>
       <div style={sectionContainerStyle}>
         <CollapsibleSection title="Compute">
-          {computeServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
+          {computeServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Integration">
-          {integrationServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          {integrationServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Storage">
-          {storageServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          {storageServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Network">
-          {networkServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          {networkServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Data Formats and Files">
-          {dataFormatServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          {dataFormatServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
       </div>
