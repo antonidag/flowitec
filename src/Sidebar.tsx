@@ -1,7 +1,5 @@
-import { useEdges, useNodes, useReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, { useState } from "react";
-import { FlowEdge, FlowNode } from "./Flow";
 import { ServiceCategory, ServiceNode } from "./CustomServiceNode";
 
 
@@ -287,7 +285,7 @@ const Sidebar = () => {
           ))}
         </CollapsibleSection>
 
-        <CollapsibleSection title="Networking">
+        <CollapsibleSection title="Network">
           {networkServiceNodes.map((node) => (
             <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
           ))}
