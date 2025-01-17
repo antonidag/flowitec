@@ -11,6 +11,7 @@ import {
   useReactFlow,
   useEdgesState,
   useNodesState,
+  EdgeTypes,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, {
@@ -20,6 +21,7 @@ import React, {
   useState,
 } from "react";
 import CustomServiceNode, { ServiceNode } from "./CustomServiceNode";
+import CustomEdge from "./CustomServiceEdge";
 
 export type FlowNode = Node<{ label: string; editing: boolean }>;
 export type FlowEdge = Edge;
@@ -30,6 +32,10 @@ const nodeTypes = {
 const initialNodes: Node<ServiceNode>[] = [];
 
 
+const edgeTypes: EdgeTypes = {
+  custom: CustomEdge
+};
+
 const Flow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState<FlowEdge>([]);
@@ -39,28 +45,37 @@ const Flow = () => {
   const [clickedEdge, setClickedEdge] = useState<string | null>(null); // State for clicked node
 
   const onConnect = useCallback<OnConnect>(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params) => {
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...params,
+            type:'custom',
+            data: {
+              startLabel: 'test',
+              endLabel: 'test'
+            }
+          },
+          eds
+        )
+      );
+    },
     [setEdges]
   );
+
 
   // Ask Winberg how to deal with states, because it seems to not work properly
   const handleNodeClick = useCallback<NodeMouseHandler<FlowNode>>(
     (_event, node) => {
-      console.log("Enter Node Click handle fnc");
       setClickedNode(node.id); // Update state with the clicked node's ID
       setClickedEdge(null);
-      console.log({ clickedEdge });
-      console.log({ clickedNode });
     },
     []
   );
   const handleEdgeClick = useCallback<EdgeMouseHandler<FlowEdge>>(
     (_event, edge) => {
-      console.log("Enter Edge Click handle fnc");
       setClickedEdge(edge.id); // Update state with the clicked edge's ID
       setClickedNode(null);
-      console.log({ clickedEdge });
-      console.log({ clickedNode });
     },
     []
   );
@@ -162,8 +177,6 @@ const Flow = () => {
   const handleKeyDownGlobal = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Delete") {
-        console.log({ clickedEdge });
-        console.log({ clickedNode });
         if (clickedNode) {
           // Remove the clicked node
           setNodes((prevNodes) =>
@@ -225,6 +238,7 @@ const Flow = () => {
         onNodeClick={handleNodeClick}
         onEdgeClick={handleEdgeClick}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
       >
         <Controls />
         <Background />
