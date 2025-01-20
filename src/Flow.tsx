@@ -227,7 +227,7 @@ const Flow = () => {
         id: `${transferData.title}-${nodes.length + 1}`,
         type: 'turbo',
         position,
-        data: { label: `${transferData.label}`, title: transferData.title, iconUrl: transferData.iconUrl,subline: transferData.subline, appRoles: transferData.appRoles,category: "Compute" },
+        data: { label: `${transferData.label}`, title: transferData.title, iconUrl: transferData.iconUrl,subline: transferData.subline, appRoles: transferData.appRoles,category: transferData.category },
       };
 
       setNodes((nds) => nds.concat(newNode));

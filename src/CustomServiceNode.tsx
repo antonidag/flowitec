@@ -17,30 +17,42 @@ export type ServiceNode = {
 }
 
 export default memo(({ data }: NodeProps<Node<ServiceNode>>) => {
-  return (
-    <div style={nodeStyle}>
-      {data.iconUrl && <img src={data.iconUrl} alt="Icon" style={iconStyle} />}
-      <div style={titleStyle}>{data.title}</div>
-      <div style={labelStyle}>{data.label}</div>
-      {data.subline && <div style={sublineStyle}>{data.subline}</div>}
-
-      {data.appRoles && (
-        <div>
-          <label htmlFor="app_role">Act as:</label>
-          <select name="app_role" id="app_role">
-            {data.appRoles.map((role, index) => (
-              <option key={index} value={role}>
-                {role}
-              </option>
-            ))}
-          </select>
+  switch (data.category) {
+    case 'Data Formats':
+      return (
+        <div style={nodeStyle}>
+          {data.iconUrl && <img src={data.iconUrl} alt="Icon" style={iconStyle} />}
+          <Handle type="target" position={Position.Top} style={handleStyle} />
+          <Handle type="source" position={Position.Bottom} style={handleStyle} />
         </div>
-      )}
+      );
 
-      <Handle type="target" position={Position.Top} style={handleStyle} />
-      <Handle type="source" position={Position.Bottom} style={handleStyle} />
-    </div>
-  );
+    default:
+      return (
+        <div style={nodeStyle}>
+          {data.iconUrl && <img src={data.iconUrl} alt="Icon" style={iconStyle} />}
+          <div style={titleStyle}>{data.title}</div>
+          <div style={labelStyle}>{data.label}</div>
+          {data.subline && <div style={sublineStyle}>{data.subline}</div>}
+
+          {data.appRoles && (
+            <div>
+              <label htmlFor="app_role">Act as:</label>
+              <select name="app_role" id="app_role">
+                {data.appRoles.map((role, index) => (
+                  <option key={index} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <Handle type="target" position={Position.Top} style={handleStyle} />
+          <Handle type="source" position={Position.Bottom} style={handleStyle} />
+        </div>
+      );
+  }
 });
 
 const nodeStyle: React.CSSProperties = {

@@ -10,7 +10,7 @@ const computeServiceNodes: ServiceNode[] = [
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/10838/10838328.png'
   },
   {
-    title: 'Function App',
+    title: 'Function',
     category: 'Compute',
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/18417/18417702.png '
   },
