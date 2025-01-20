@@ -52,10 +52,10 @@ const Flow = () => {
             ...params,
             type:'custom',
             data: {
-              startLabel: 'test',
-              endLabel: 'test'
+              editing: false,
             }
           },
+        
           eds
         )
       );
@@ -63,6 +63,62 @@ const Flow = () => {
     [setEdges]
   );
 
+  const handleEdgeDoubleClick = useCallback<EdgeMouseHandler<FlowEdge>>(
+    (_event, original) => {
+      const updatedEdges = edges.map((edge) => {
+        if (edge.id === original.id) {
+          return {
+            ...edge,
+            data: {
+              ...edge.data,
+              editing: true, // Enable editing mode
+            },
+          };
+        }
+        return edge;
+      });
+      setEdges(updatedEdges);
+    },
+    [edges, setEdges]
+  );
+  
+  const handleEdgeLabelChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    edgeId: string
+  ) => {
+    const newLabel = event.target.value;
+  
+    setEdges((prevEdges) =>
+      prevEdges.map((edge) =>
+        edge.id === edgeId
+          ? {
+              ...edge,
+              data: {
+                ...edge.data,
+                middelLabel: newLabel,
+              },
+            }
+          : edge
+      )
+    );
+  };
+  
+  const handleEdgeBlur = (edgeId: string) => {
+    setEdges((prevEdges) =>
+      prevEdges.map((edge) =>
+        edge.id === edgeId
+          ? {
+              ...edge,
+              data: {
+                ...edge.data,
+                editing: false, // Exit editing mode
+              },
+            }
+          : edge
+      )
+    );
+  };
+  
 
   // Ask Winberg how to deal with states, because it seems to not work properly
   const handleNodeClick = useCallback<NodeMouseHandler<FlowNode>>(
@@ -126,6 +182,16 @@ const Flow = () => {
   ) => {
     if (event.key === "Enter") {
       handleBlur(nodeId);
+    }
+  };
+
+
+  const handleKeyDownEdge = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    edgeId: string
+  ) => {
+    if (event.key === "Enter") {
+      handleEdgeBlur(edgeId);
     }
   };
 
@@ -210,39 +276,59 @@ const Flow = () => {
   return (
     <div style={{ width: "80%" }} onDrop={onDrop} onDragOver={onDragOver}>
       <ReactFlow<any>
-        nodes={nodes.map((node) => ({
-          ...node,
-          data: {
-            ...node.data,
-            title: node.data.editing ? (
-              <input
-                type="text"
-                value={node.data.title}
-                onChange={(e) => handleNameChange(e, node.id)}
-                onBlur={() => handleBlur(node.id)}
-                onKeyDown={(e) => handleKeyDown(e, node.id)}
-                autoFocus
-                style={{ width: "100px" }}
-              />
-            ) : (
-              node.data.title
-            ),
-          },
-        }))}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onNodeDoubleClick={handleDoubleClick}
-        style={{ width: "100%", height: "100%" }}
-        onNodeClick={handleNodeClick}
-        onEdgeClick={handleEdgeClick}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-      >
-        <Controls />
-        <Background />
-      </ReactFlow>
+  nodes={nodes.map((node) => ({
+    ...node,
+    data: {
+      ...node.data,
+      title: node.data.editing ? (
+        <input
+          type="text"
+          value={node.data.title}
+          onChange={(e) => handleNameChange(e, node.id)}
+          onBlur={() => handleBlur(node.id)}
+          onKeyDown={(e) => handleKeyDown(e, node.id)}
+          autoFocus
+          style={{ width: "100px" }}
+        />
+      ) : (
+        node.data.title
+      ),
+    },
+  }))}
+  edges={edges.map((edge) => ({
+    ...edge,
+    data: {
+      ...edge.data,
+      middelLabel: edge.data.editing ? (
+        <input
+          type="text"
+          value={edge.data.middelLabel ?? ''}
+          onChange={(e) => handleEdgeLabelChange(e, edge.id)}
+          onBlur={() => handleEdgeBlur(edge.id)}
+          onKeyDown={(e) => handleKeyDown(e, edge.id)}
+          autoFocus
+          style={{ width: "100px", padding: "5px" }}
+        />
+      ) : (
+        edge.data.middelLabel ?? ''
+      ),
+    },
+  }))}
+  onNodesChange={onNodesChange}
+  onEdgesChange={onEdgesChange}
+  onConnect={onConnect}
+  onNodeDoubleClick={handleDoubleClick}
+  onEdgeDoubleClick={handleEdgeDoubleClick}
+  style={{ width: "100%", height: "100%" }}
+  onNodeClick={handleNodeClick}
+  onEdgeClick={handleEdgeClick}
+  nodeTypes={nodeTypes}
+  edgeTypes={edgeTypes}
+>
+  <Controls />
+  <Background />
+</ReactFlow>
+
     </div>
   );
 };

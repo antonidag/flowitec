@@ -28,7 +28,7 @@ function EdgeLabel({ transform, label }: { transform: string; label: string }) {
 }
  
 const CustomEdge: FC<
-  EdgeProps<Edge<{ startLabel: string; endLabel: string }>>
+  EdgeProps<Edge<{ middelLabel: string; }>>
 > = ({
   id,
   sourceX,
@@ -53,10 +53,10 @@ const CustomEdge: FC<
     <>
       <BaseEdge id={id} path={edgePath} />
       <EdgeLabelRenderer>
-        {data?.endLabel && (
+        {data?.middelLabel && (
           <EdgeLabel
             transform={`translate(-50%, -50%) translate(${labelX}px,${labelY}px)`}
-            label=''
+            label={data?.middelLabel}
           />
         )}
       </EdgeLabelRenderer>
