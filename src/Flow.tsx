@@ -305,7 +305,7 @@ const Flow = () => {
           value={edge.data.middelLabel ?? ''}
           onChange={(e) => handleEdgeLabelChange(e, edge.id)}
           onBlur={() => handleEdgeBlur(edge.id)}
-          onKeyDown={(e) => handleKeyDown(e, edge.id)}
+          onKeyDown={(e) => handleKeyDownEdge(e, edge.id)}
           autoFocus
           style={{ width: "100px", padding: "5px" }}
         />
