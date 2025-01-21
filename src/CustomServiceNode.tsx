@@ -20,9 +20,9 @@ export default memo(({ data }: NodeProps<Node<ServiceNode>>) => {
   switch (data.category) {
     case 'Data Formats':
       return (
-        <div style={nodeStyle}>
-          {data.iconUrl && <img src={data.iconUrl} alt="Icon" style={iconStyle} />}
+        <div style={dataFormatsNodeStyle}>
           <Handle type="target" position={Position.Top} style={handleStyle} />
+          {data.iconUrl && <img src={data.iconUrl} alt="Icon" style={dataFormatsIconStyle} />}
           <Handle type="source" position={Position.Bottom} style={handleStyle} />
         </div>
       );
@@ -69,6 +69,18 @@ const nodeStyle: React.CSSProperties = {
   width: '150px',
 };
 
+const dataFormatsNodeStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  border: '1px solid #00c8ff',
+  borderRadius: '50%',
+  width: '75px',
+  height: '75px',
+  boxShadow: '0 0 10px rgba(0, 200, 255, 0.3)',
+};
+
 const iconStyle: React.CSSProperties = {
   position: 'absolute',
   top: '-15px', // Position above the node
@@ -76,6 +88,12 @@ const iconStyle: React.CSSProperties = {
   width: '40px',
   height: '40px',
   objectFit: 'contain'
+};
+
+const dataFormatsIconStyle: React.CSSProperties = {
+  width: '50%',
+  height: '50%',
+  objectFit: 'contain',
 };
 
 const titleStyle: React.CSSProperties = {
