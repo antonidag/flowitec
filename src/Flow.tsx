@@ -24,7 +24,10 @@ import CustomServiceNode, { ServiceNode } from "./CustomServiceNode";
 import CustomEdge from "./CustomServiceEdge";
 
 export type FlowNode = Node<{ label: string; editing: boolean }>;
-export type FlowEdge = Edge;
+export type FlowEdge = Edge<{
+  middelLabel?: string;
+  editing?: boolean;
+}>;
 
 const nodeTypes = {
   turbo: CustomServiceNode,
@@ -50,12 +53,11 @@ const Flow = () => {
         addEdge(
           {
             ...params,
-            type:'custom',
+            type: 'custom',
             data: {
               editing: false,
             }
           },
-        
           eds
         )
       );
@@ -81,44 +83,44 @@ const Flow = () => {
     },
     [edges, setEdges]
   );
-  
+
   const handleEdgeLabelChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     edgeId: string
   ) => {
     const newLabel = event.target.value;
-  
+
     setEdges((prevEdges) =>
       prevEdges.map((edge) =>
         edge.id === edgeId
           ? {
-              ...edge,
-              data: {
-                ...edge.data,
-                middelLabel: newLabel,
-              },
-            }
+            ...edge,
+            data: {
+              ...edge.data,
+              middelLabel: newLabel,
+            },
+          }
           : edge
       )
     );
   };
-  
+
   const handleEdgeBlur = (edgeId: string) => {
     setEdges((prevEdges) =>
       prevEdges.map((edge) =>
         edge.id === edgeId
           ? {
-              ...edge,
-              data: {
-                ...edge.data,
-                editing: false, // Exit editing mode
-              },
-            }
+            ...edge,
+            data: {
+              ...edge.data,
+              editing: false, // Exit editing mode
+            },
+          }
           : edge
       )
     );
   };
-  
+
 
   // Ask Winberg how to deal with states, because it seems to not work properly
   const handleNodeClick = useCallback<NodeMouseHandler<FlowNode>>(
@@ -227,7 +229,7 @@ const Flow = () => {
         id: `${transferData.title}-${nodes.length + 1}`,
         type: 'turbo',
         position,
-        data: { label: `${transferData.label}`, title: transferData.title, iconUrl: transferData.iconUrl,subline: transferData.subline, appRoles: transferData.appRoles,category: transferData.category },
+        data: { label: `${transferData.label}`, title: transferData.title, iconUrl: transferData.iconUrl, subline: transferData.subline, appRoles: transferData.appRoles, category: transferData.category },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -276,58 +278,59 @@ const Flow = () => {
   return (
     <div style={{ width: "80%" }} onDrop={onDrop} onDragOver={onDragOver}>
       <ReactFlow<any>
-  nodes={nodes.map((node) => ({
-    ...node,
-    data: {
-      ...node.data,
-      title: node.data.editing ? (
-        <input
-          type="text"
-          value={node.data.title}
-          onChange={(e) => handleNameChange(e, node.id)}
-          onBlur={() => handleBlur(node.id)}
-          onKeyDown={(e) => handleKeyDown(e, node.id)}
-          autoFocus
-          style={{ width: "100px" }}
-        />
-      ) : (
-        node.data.title
-      ),
-    },
-  }))}
-  edges={edges.map((edge) => ({
-    ...edge,
-    data: {
-      ...edge.data,
-      middelLabel: edge.data.editing ? (
-        <input
-          type="text"
-          value={edge.data.middelLabel ?? ''}
-          onChange={(e) => handleEdgeLabelChange(e, edge.id)}
-          onBlur={() => handleEdgeBlur(edge.id)}
-          onKeyDown={(e) => handleKeyDownEdge(e, edge.id)}
-          autoFocus
-          style={{ width: "100px", padding: "5px" }}
-        />
-      ) : (
-        edge.data.middelLabel ?? ''
-      ),
-    },
-  }))}
-  onNodesChange={onNodesChange}
-  onEdgesChange={onEdgesChange}
-  onConnect={onConnect}
-  onNodeDoubleClick={handleDoubleClick}
-  onEdgeDoubleClick={handleEdgeDoubleClick}
-  style={{ width: "100%", height: "100%" }}
-  onNodeClick={handleNodeClick}
-  onEdgeClick={handleEdgeClick}
-  nodeTypes={nodeTypes}
-  edgeTypes={edgeTypes}
->
-  <Controls />
-  <Background />
-</ReactFlow>
+        nodes={nodes.map((node) => ({
+          ...node,
+          data: {
+            ...node.data,
+            title: node.data.editing ? (
+              <input
+                type="text"
+                value={node.data.title}
+                onChange={(e) => handleNameChange(e, node.id)}
+                onBlur={() => handleBlur(node.id)}
+                onKeyDown={(e) => handleKeyDown(e, node.id)}
+                autoFocus
+                style={{ width: "100px" }}
+              />
+            ) : (
+              node.data.title
+            ),
+          },
+        }))}
+        edges={edges.map((edge) => ({
+          ...edge,
+          data: {
+            ...edge.data,
+            middelLabel: edge.data?.editing ? (
+              <input
+                type="text"
+                value={edge.data?.middelLabel ?? ''}
+                onChange={(e) => handleEdgeLabelChange(e, edge.id)}
+                onBlur={() => handleEdgeBlur(edge.id)}
+                onKeyDown={(e) => handleKeyDownEdge(e, edge.id)}
+                autoFocus
+                style={{ width: "100px", padding: "5px" }}
+              />
+            ) : (
+              edge.data?.middelLabel ?? ''
+            ),
+          },
+        }))}
+
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        onNodeDoubleClick={handleDoubleClick}
+        onEdgeDoubleClick={handleEdgeDoubleClick}
+        style={{ width: "100%", height: "100%" }}
+        onNodeClick={handleNodeClick}
+        onEdgeClick={handleEdgeClick}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+      >
+        <Controls />
+        <Background />
+      </ReactFlow>
 
     </div>
   );
