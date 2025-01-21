@@ -1,7 +1,5 @@
-import { useEdges, useNodes, useReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, { useState } from "react";
-import { FlowEdge, FlowNode } from "./Flow";
 import { ServiceCategory, ServiceNode } from "./CustomServiceNode";
 
 
@@ -12,9 +10,9 @@ const computeServiceNodes: ServiceNode[] = [
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/10838/10838328.png'
   },
   {
-    title: 'Function App',
+    title: 'Function',
     category: 'Compute',
-    iconUrl: 'https://static-00.iconduck.com/assets.00/function-icon-512x484-gukb2n0i.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/18417/18417702.png '
   },
   {
     title: 'Container App',
@@ -38,7 +36,7 @@ const integrationServiceNodes: ServiceNode[] = [
   {
     title: 'API Management',
     category: "Integration",
-    iconUrl: 'https://cdn2.iconfinder.com/data/icons/devops-flat-2/60/API-Management-api-management-cog-gear-website-512.png',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/18033/18033070.png',
     appRoles: ['Proxy', 'Gateway', 'Pass-Thru']
   },
   {
@@ -96,7 +94,7 @@ const networkServiceNodes: ServiceNode[] = [
   {
     title: 'Application Gateway',
     category: "Network",
-    iconUrl: 'https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2581/2581805.png'
   }
 ]
 
@@ -105,22 +103,22 @@ const dataFormatServiceNodes: ServiceNode[] = [
   {
     title: 'JSON',
     category: "Data Formats",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6394/6394065.png',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/14535/14535271.png',
   },
   {
     title: 'XML',
     category: "Data Formats",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5105/5105259.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/337/337959.png '
   },
   {
     title: 'CSV',
     category: "Data Formats",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/15424/15424745.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/8242/8242984.png '
   },
   {
     title: 'Binary',
     category: "Data Formats",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1541/1541857.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3143/3143509.png '
   }
 ]
 
@@ -270,32 +268,32 @@ const Sidebar = () => {
       <h1 style={headerStyle}>FlowiTec</h1>
       <div style={sectionContainerStyle}>
         <CollapsibleSection title="Compute">
-          {computeServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
+          {computeServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Integration">
-          {integrationServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          {integrationServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Storage">
-          {storageServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          {storageServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
 
-        <CollapsibleSection title="Networking">
-          {networkServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+        <CollapsibleSection title="Network">
+          {networkServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
 
         <CollapsibleSection title="Data Formats and Files">
-          {dataFormatServiceNodes.map((node) => (
-            <DraggableNode name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category}/>
+          {dataFormatServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>
       </div>
