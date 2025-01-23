@@ -122,6 +122,25 @@ const dataFormatServiceNodes: ServiceNode[] = [
   }
 ]
 
+const blockServiceNodes: ServiceNode[] = [
+  {
+    title: 'Page',
+    category: "Block",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/18544/18544859.png',
+  },
+  {
+    title: 'End-point',
+    category: "Block",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1828/1828881.png'
+  }
+  ,
+  {
+    title: 'Policy',
+    category: "Block",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/8040/8040938.png'
+  }
+]
+
 interface DraggableNodeProps {
   name: string;
   imgURL: string
@@ -293,6 +312,11 @@ const Sidebar = () => {
 
         <CollapsibleSection title="Data Formats and Files">
           {dataFormatServiceNodes.map((node, index) => (
+            <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
+          ))}
+        </CollapsibleSection>
+        <CollapsibleSection title="Blocks">
+          {blockServiceNodes.map((node, index) => (
             <DraggableNode key={index} name={node.title} imgURL={node.iconUrl} appRoles={node.appRoles} category={node.category} />
           ))}
         </CollapsibleSection>

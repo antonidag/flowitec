@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 import { Handle, Position, type Node, type NodeProps } from '@xyflow/react';
 
 
-export type ServiceCategory = 'Compute' | 'Integration' | 'Storage' | 'Network' | 'Data Formats'
+export type ServiceCategory = 'Compute' | 'Integration' | 'Storage' | 'Network' | 'Data Formats' | 'Block'
 
 
 export type ServiceNode = {
