@@ -313,7 +313,9 @@ const Sidebar = () => {
     const encodedNodes = encodeURIComponent(JSON.stringify(dataObject));
     try {
       const currentDomain = window.location.origin; // Or window.location.hostname for just the domain
-      const clipboardData = `${currentDomain}?data=${encodedNodes}`;
+      const currentPath = window.location.pathname;
+      console.log(currentPath)
+      const clipboardData = `${currentDomain}${currentPath}?data=${encodedNodes}`;
       await navigator.clipboard.writeText(clipboardData);
 
        // Get the current domain
