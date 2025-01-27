@@ -22,8 +22,9 @@ import React, {
 } from "react";
 import CustomServiceNode, { ServiceNode } from "./CustomServiceNode";
 import CustomEdge from "./CustomServiceEdge";
+import { computeServiceNodes, integrationServiceNodes, storageServiceNodes, networkServiceNodes, dataFormatServiceNodes, blockServiceNodes } from "./Sidebar";
 
-export type FlowNode = Node<{ label: string; editing: boolean }>;
+export type FlowNode = Node<{ label: string; editing: boolean, title: string }>;
 export type FlowEdge = Edge<{
   middelLabel?: string;
   editing?: boolean;
@@ -32,21 +33,79 @@ export type FlowEdge = Edge<{
 const nodeTypes = {
   turbo: CustomServiceNode,
 };
-const initialNodes: Node<ServiceNode>[] = [];
-
 
 const edgeTypes: EdgeTypes = {
   custom: CustomEdge
 };
 
-const Flow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<FlowEdge>([]);
+export type FlowInput = {
+  nodes: MinimalNode[]
+  edges: []
+}
+
+export type MinimalNode = {
+  title: string,
+  label: string,
+  id: string,
+  x: number,
+  y: number
+}
+
+const Flow = ({
+  isEmbed,
+  data,
+}: {
+  isEmbed: boolean; // Accepts true, false, or undefined
+  data?: FlowInput;
+}) => {
+
+  // Default empty initial nodes and edges
+  const defaultInitialNodes: Node<ServiceNode>[] = [];
+  const defaultInitialEdges: FlowEdge[] = [];
+  if (isEmbed && data) {
+    for (const element of data.nodes) {
+      // Find the matching service node based on the title
+      let matchedNode;
+      // Check in all service node categories
+      const allServiceNodes = [
+        ...computeServiceNodes,
+        ...integrationServiceNodes,
+        ...storageServiceNodes,
+        ...networkServiceNodes,
+        ...dataFormatServiceNodes,
+        ...blockServiceNodes
+      ];
+      matchedNode = allServiceNodes.find((serviceNode) => serviceNode.title === element.label);
+      console.log(matchedNode)
+      // If a matching node is found, update the category and iconUrl properties
+      if (matchedNode) {
+        defaultInitialNodes.push({
+          type: 'turbo',
+          draggable: false,
+          data: {
+            editing: false,
+            category: matchedNode.category, // Set category from matched node
+            title: element.title,       // Set title from matched node
+            label: element.label,         // You can modify this part as per your requirement
+            iconUrl: matchedNode.iconUrl,    // Set iconUrl from matched node
+            subline: matchedNode.subline,
+            appRoles: matchedNode.appRoles
+          },
+          id: element.id, // Set an appropriate id here
+          position: {
+            x: element.x,
+            y: element.y
+          }
+        });
+      }
+    }
+  }
+  const [nodes, setNodes, onNodesChange] = useNodesState(defaultInitialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(defaultInitialEdges);
   const { screenToFlowPosition } = useReactFlow();
 
-  const [clickedNode, setClickedNode] = useState<string | null>(null); // State for clicked node
-  const [clickedEdge, setClickedEdge] = useState<string | null>(null); // State for clicked node
-
+  const [clickedNode, setClickedNode] = useState<string | null>(null);
+  const [clickedEdge, setClickedEdge] = useState<string | null>(null);
   const onConnect = useCallback<OnConnect>(
     (params) => {
       setEdges((eds) =>
@@ -231,7 +290,6 @@ const Flow = () => {
         position,
         data: { label: `${transferData.label}`, title: transferData.title, iconUrl: transferData.iconUrl, subline: transferData.subline, appRoles: transferData.appRoles, category: transferData.category },
       };
-
       setNodes((nds) => nds.concat(newNode));
     },
     [nodes, setNodes]
@@ -275,8 +333,17 @@ const Flow = () => {
     };
   }, [handleKeyDownGlobal]);
 
+  const { fitView } = useReactFlow();
+  useEffect(() => {
+    // Auto-zoom when nodes or edges change
+    if (isEmbed)
+      fitView({ padding: 0.1, duration: 800 });
+  }, [nodes, edges, fitView]); // Re-trigger zoom when nodes or edges are updated
+
   return (
-    <div style={{ width: "80%" }} onDrop={onDrop} onDragOver={onDragOver}>
+
+
+    <div style={{ width: isEmbed ? "100%" : "80%" }} onDrop={onDrop} onDragOver={onDragOver}>
       <ReactFlow<any>
         nodes={nodes.map((node) => ({
           ...node,
@@ -327,8 +394,13 @@ const Flow = () => {
         onEdgeClick={handleEdgeClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
+        draggable={isEmbed ? false : true} // Disable drag for all nodes
+        panOnDrag={isEmbed ? false : true}
+        zoomOnScroll={isEmbed ? false : true}
+        zoomOnPinch={isEmbed ? false : true}
+        zoomOnDoubleClick={isEmbed ? false : true}
       >
-        <Controls />
+        {!isEmbed ? <Controls /> : <></>}
         <Background />
       </ReactFlow>
 

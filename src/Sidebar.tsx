@@ -1,9 +1,11 @@
 import "@xyflow/react/dist/style.css";
 import React, { useState } from "react";
 import { ServiceCategory, ServiceNode } from "./CustomServiceNode";
+import { useReactFlow } from "@xyflow/react";
+import { FlowNode, MinimalNode } from "./Flow";
 
 
-const computeServiceNodes: ServiceNode[] = [
+export const computeServiceNodes: ServiceNode[] = [
   {
     title: 'Web Service',
     category: "Compute",
@@ -32,7 +34,7 @@ const computeServiceNodes: ServiceNode[] = [
     appRoles: ['SaaS', 'PasS', 'On-Prem']
   }
 ]
-const integrationServiceNodes: ServiceNode[] = [
+export const integrationServiceNodes: ServiceNode[] = [
   {
     title: 'API Management',
     category: "Integration",
@@ -56,7 +58,7 @@ const integrationServiceNodes: ServiceNode[] = [
     appRoles: ['Pub-Sub', 'Queue']
   }
 ]
-const storageServiceNodes: ServiceNode[] = [
+export const storageServiceNodes: ServiceNode[] = [
   {
     title: 'Database',
     category: "Storage",
@@ -80,7 +82,7 @@ const storageServiceNodes: ServiceNode[] = [
   }
 ]
 
-const networkServiceNodes: ServiceNode[] = [
+export const networkServiceNodes: ServiceNode[] = [
   {
     title: 'Load Balancer',
     category: 'Network',
@@ -99,7 +101,7 @@ const networkServiceNodes: ServiceNode[] = [
 ]
 
 
-const dataFormatServiceNodes: ServiceNode[] = [
+export const dataFormatServiceNodes: ServiceNode[] = [
   {
     title: 'JSON',
     category: "Data Formats",
@@ -122,7 +124,7 @@ const dataFormatServiceNodes: ServiceNode[] = [
   }
 ]
 
-const blockServiceNodes: ServiceNode[] = [
+export const blockServiceNodes: ServiceNode[] = [
   {
     title: 'Page',
     category: "Block",
@@ -282,9 +284,50 @@ const contentStyle: React.CSSProperties = {
 };
 
 const Sidebar = () => {
+
+  const { getNodes, getEdges } = useReactFlow(); // Access React Flow's state
+
+  // Function to handle button click and log nodes and edges
+  const handleButtonClick = async () => {
+    const nodes = getNodes() as FlowNode[];  // Get all nodes
+    const edges = getEdges();  // Get all edges
+
+    console.log('Nodes:', nodes);
+    console.log('Edges:', edges);
+
+    const minimalNodes: MinimalNode[] = [];
+    for (const element of nodes) {
+      minimalNodes.push({
+        id: element.id,
+        label: element.data.label,
+        title: element.data.title,
+        x: element.position.x,
+        y: element.position.y
+      })
+    }
+    const dataObject = {nodes: minimalNodes, edges: []}
+
+
+    console.log(dataObject)
+    // Copy to clipboard
+    const encodedNodes = encodeURIComponent(JSON.stringify(dataObject));
+    try {
+      const currentDomain = window.location.origin; // Or window.location.hostname for just the domain
+      const clipboardData = `${currentDomain}?data=${encodedNodes}`;
+      await navigator.clipboard.writeText(clipboardData);
+
+       // Get the current domain
+      alert('Nodes and Edges copied to clipboard!');
+    } catch (err) {
+      alert('Failed to copy to clipboard');
+    }
+  };
   return (
     <div style={sidebarStyle}>
       <h1 style={headerStyle}>FlowiTec</h1>
+      <button onClick={handleButtonClick} style={buttonStyle}>
+        Share link
+      </button>
       <div style={sectionContainerStyle}>
         <CollapsibleSection title="Compute">
           {computeServiceNodes.map((node, index) => (
@@ -355,4 +398,14 @@ const sectionContainerStyle: React.CSSProperties = {
   scrollbarWidth: 'thin',
   scrollbarColor: '#00c8ff #1f1f1f',
 };
-
+// Button style
+const buttonStyle: React.CSSProperties = {
+  padding: '10px 15px',
+  backgroundColor: '#00c8ff',
+  color: '#ffffff',
+  border: 'none',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  marginBottom: '15px',
+  transition: 'background-color 0.3s ease',
+};
