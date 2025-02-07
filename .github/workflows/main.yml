@@ -51,4 +51,3 @@ jobs:
         uses: actions/upload-pages-artifact@v3.0.1
         with:
           name: github-pages
-          path: ./dist
