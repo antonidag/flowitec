@@ -394,11 +394,6 @@ const Flow = ({
         onEdgeClick={handleEdgeClick}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        draggable={isEmbed ? false : true} // Disable drag for all nodes
-        panOnDrag={isEmbed ? false : true}
-        zoomOnScroll={isEmbed ? false : true}
-        zoomOnPinch={isEmbed ? false : true}
-        zoomOnDoubleClick={isEmbed ? false : true}
       >
         {!isEmbed ? <Controls /> : <></>}
         <Background />
