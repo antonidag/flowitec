@@ -36,12 +36,13 @@ jobs:
     # Step 5: Move build output from ./dist to ./_site
     - name: Move build to _site
       run: |
+        mkdir -p ./_site  # Ensure _site exists
         mv ./dist/* ./_site/
 
     -  name: Upload GitHub Pages artifact
        uses: actions/upload-pages-artifact@v3.0.1
        with:
-        path: ./dist
+        path: ./_site
   
 
    # Deployment job
