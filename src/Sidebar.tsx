@@ -2,7 +2,7 @@ import "@xyflow/react/dist/style.css";
 import React, { useState } from "react";
 import { ServiceCategory, ServiceNode } from "./CustomServiceNode";
 import { useReactFlow } from "@xyflow/react";
-import { FlowNode, MinimalNode } from "./Flow";
+import { FlowNode, MinimalEdge, MinimalNode } from "./Flow";
 
 
 export const computeServiceNodes: ServiceNode[] = [
@@ -305,7 +305,17 @@ const Sidebar = () => {
         y: element.position.y
       })
     }
-    const dataObject = {nodes: minimalNodes, edges: []}
+
+    const minimalEdge: MinimalEdge[] = [];
+    for (const element of edges) {
+      minimalEdge.push({
+        id: element.id,
+        middleLabel: element.data?.middelLabel as string || '',
+        source: element.source,
+        target: element.target
+      })
+    }
+    const dataObject = {nodes: minimalNodes, edges: minimalEdge}
 
 
     console.log(dataObject)

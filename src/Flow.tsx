@@ -40,7 +40,7 @@ const edgeTypes: EdgeTypes = {
 
 export type FlowInput = {
   nodes: MinimalNode[]
-  edges: []
+  edges: MinimalEdge[]
 }
 
 export type MinimalNode = {
@@ -49,6 +49,13 @@ export type MinimalNode = {
   id: string,
   x: number,
   y: number
+}
+
+export type MinimalEdge = {
+  middleLabel: string,
+  id: string,
+  source: string,
+  target: string
 }
 
 const Flow = ({
@@ -98,6 +105,18 @@ const Flow = ({
           }
         });
       }
+    }
+    for (const element of data.edges) {
+      defaultInitialEdges.push({
+        type: 'custom',
+        id: element.id,
+        source: element.source,
+        target: element.target,
+        data: {
+          editing: false,
+          middelLabel: element.middleLabel
+        }
+      })
     }
   }
   const [nodes, setNodes, onNodesChange] = useNodesState(defaultInitialNodes);
