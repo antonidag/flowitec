@@ -33,11 +33,16 @@ jobs:
     - name: Build the project
       run: npm run build
 
+    # Step 5: Move build output from ./dist to ./_site
+    - name: Move build to _site
+      run: |
+        mv ./dist/* ./_site/
+
     -  name: Upload GitHub Pages artifact
        uses: actions/upload-pages-artifact@v3.0.1
        with:
         path: ./dist
-    
+  
 
    # Deployment job
   deploy:
