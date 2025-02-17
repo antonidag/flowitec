@@ -8,6 +8,10 @@ body {
   width: 100vw;
   height: 100vh;
 }
+
+.react-flow__attribution {
+  display: none;
+}
 /* This could be used but is not a must...? 
 .webservice {
   background: rgb(0, 122, 204);
