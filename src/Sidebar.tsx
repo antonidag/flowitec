@@ -25,7 +25,6 @@ export const computeServiceNodes: ServiceNode[] = [
     title: 'Virtual Machine',
     category: "Compute",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/11813/11813930.png',
-    appRoles: ['SFTP', 'FTP', 'Server']
   },
   {
     title: 'Application',
@@ -39,7 +38,6 @@ export const integrationServiceNodes: ServiceNode[] = [
     title: 'API Management',
     category: "Integration",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/18033/18033070.png',
-    appRoles: ['Proxy', 'Gateway', 'Pass-Thru']
   },
   {
     title: 'Logic App',
@@ -55,7 +53,6 @@ export const integrationServiceNodes: ServiceNode[] = [
     title: 'Service Bus',
     category: "Integration",
     iconUrl: 'https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315',
-    appRoles: ['Pub-Sub', 'Queue']
   }
 ]
 export const storageServiceNodes: ServiceNode[] = [
@@ -63,7 +60,6 @@ export const storageServiceNodes: ServiceNode[] = [
     title: 'Database',
     category: "Storage",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/9850/9850812.png',
-    appRoles: ['Relation', 'Document', 'Graph', 'Vector']
   },
   {
     title: 'Cache',
