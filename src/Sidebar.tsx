@@ -150,7 +150,7 @@ export const blockServiceNodes: ServiceNode[] = [
   {
     title: 'Action',
     category: "Block",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/900/900834.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/8385/8385004.png'
   }
 ]
 
