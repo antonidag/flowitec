@@ -30,7 +30,6 @@ export const computeServiceNodes: ServiceNode[] = [
     title: 'Application',
     category: "Compute",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/5669/5669390.png',
-    appRoles: ['SaaS', 'PasS', 'On-Prem']
   }
 ]
 export const integrationServiceNodes: ServiceNode[] = [
@@ -117,6 +116,11 @@ export const dataFormatServiceNodes: ServiceNode[] = [
     title: 'Binary',
     category: "Data Formats",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/3143/3143509.png '
+  },
+  {
+    title: 'HTML',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/136/136528.png'
   }
 ]
 
@@ -136,6 +140,17 @@ export const blockServiceNodes: ServiceNode[] = [
     title: 'Policy',
     category: "Block",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/8040/8040938.png'
+  }
+  ,
+  {
+    title: 'Trigger',
+    category: "Block",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6577/6577171.png'
+  },
+  {
+    title: 'Action',
+    category: "Block",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/900/900834.png'
   }
 ]
 
