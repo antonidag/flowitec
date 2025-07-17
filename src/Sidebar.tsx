@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import { ServiceCategory, ServiceNode } from "./CustomServiceNode";
 import { useReactFlow } from "@xyflow/react";
 import { FlowNode, MinimalEdge, MinimalNode } from "./Flow";
-import { FaSearch as FaSearchIcon } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
+import { IconType } from "react-icons";
+
+const FaSearchIcon: IconType = FaSearch;
 
 
 export const computeServiceNodes: ServiceNode[] = [
