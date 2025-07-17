@@ -22,7 +22,7 @@ import React, {
 } from "react";
 import CustomServiceNode, { ServiceNode } from "./CustomServiceNode";
 import CustomEdge from "./CustomServiceEdge";
-import { computeServiceNodes, integrationServiceNodes, storageServiceNodes, networkServiceNodes, dataFormatServiceNodes, blockServiceNodes } from "./Sidebar";
+import { computeServiceNodes, integrationServiceNodes, storageServiceNodes, networkServiceNodes, dataFormatServiceNodes, resourceServiceNodes } from "./Sidebar";
 
 export type FlowNode = Node<{ label: string; editing: boolean, title: string }>;
 export type FlowEdge = Edge<{
@@ -80,7 +80,7 @@ const Flow = ({
         ...storageServiceNodes,
         ...networkServiceNodes,
         ...dataFormatServiceNodes,
-        ...blockServiceNodes
+        ...resourceServiceNodes
       ];
       matchedNode = allServiceNodes.find((serviceNode) => serviceNode.title === element.label);
       console.log(matchedNode)
