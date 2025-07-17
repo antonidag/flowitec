@@ -14,12 +14,12 @@ export const computeServiceNodes: ServiceNode[] = [
   {
     title: 'Web Service',
     category: "Compute",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/10838/10838328.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/10838/10838328.png',
   },
   {
     title: 'Function',
     category: 'Compute',
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/18417/18417702.png '
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/18417/18417702.png',
   },
   {
     title: 'Container App',
@@ -35,8 +35,29 @@ export const computeServiceNodes: ServiceNode[] = [
     title: 'Application',
     category: "Compute",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/5669/5669390.png',
-  }
-]
+  },
+  {
+    title: 'Kubernetes Cluster',
+    category: "Compute",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/919/919825.png',
+  },
+  {
+    title: 'App Service Plan',
+    category: "Compute",
+    iconUrl: 'https://symbols.getvecta.com/stencil_28/77_app-service-plan.83c02a3a41.svg',
+  },
+  {
+    title: 'Batch Service',
+    category: "Compute",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3926/3926092.png',
+  },
+  {
+    title: 'Cloud Run',
+    category: "Compute",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2942/2942091.png',
+  },
+];
+
 export const integrationServiceNodes: ServiceNode[] = [
   {
     title: 'API Management',
@@ -46,19 +67,50 @@ export const integrationServiceNodes: ServiceNode[] = [
   {
     title: 'Logic App',
     category: 'Integration',
-    iconUrl: 'https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg'
+    iconUrl: 'https://symbols.getvecta.com/stencil_28/43_logic-apps.50018fa8c3.svg',
   },
   {
     title: 'Event Grid',
     category: "Integration",
-    iconUrl: 'https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default'
+    iconUrl: 'https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azureeventgrid/0.1.1/1545069785961/Microsoft.VisualStudio.Services.Icons.Default',
   },
   {
     title: 'Service Bus',
     category: "Integration",
     iconUrl: 'https://azure.microsoft.com/svghandler/service-bus/?width=600&height=315',
-  }
-]
+  },
+  {
+    title: 'Service Connector',
+    category: "Integration",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2921/2921828.png', // generic connector icon
+  },
+  {
+    title: 'Azure Functions',
+    category: "Integration",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/888/888857.png',
+  },
+  {
+    title: 'Data Factory',
+    category: "Integration",
+    iconUrl: 'https://azurecomcdn.azureedge.net/cvt-78b1c0bb35db9211783e6519a23b01a32e9a4422f65dd91eb63c5e7bb1a1aa0b/images/page/services/data-factory/data-factory.svg',
+  },
+  {
+    title: 'Event Hubs',
+    category: "Integration",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/906/906324.png',
+  },
+  {
+    title: 'API Gateway',
+    category: "Integration",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1828/1828645.png',
+  },
+  {
+    title: 'Hybrid Connection',
+    category: "Integration",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/427/427735.png', // example icon
+  },
+];
+
 export const storageServiceNodes: ServiceNode[] = [
   {
     title: 'Database',
@@ -68,19 +120,50 @@ export const storageServiceNodes: ServiceNode[] = [
   {
     title: 'Cache',
     category: 'Storage',
-    iconUrl: 'https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png'
+    iconUrl: 'https://cdn2.iconfinder.com/data/icons/whcompare-isometric-web-hosting-servers/50/database-cache-512.png',
   },
   {
     title: 'Blob Storage',
     category: 'Storage',
-    iconUrl: 'https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png'
+    iconUrl: 'https://static-00.iconduck.com/assets.00/storage-blob-icon-512x454-1n4kla2j.png',
   },
   {
     title: 'File Share',
     category: 'Storage',
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1869/1869460.png'
-  }
-]
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1869/1869460.png',
+  },
+  {
+    title: 'Queue Storage',
+    category: 'Storage',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/126/126509.png',
+  },
+  {
+    title: 'Table Storage',
+    category: 'Storage',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1097/1097958.png',
+  },
+  {
+    title: 'CDN (Content Delivery Network)',
+    category: 'Storage',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/888/888857.png',
+  },
+  {
+    title: 'Backup',
+    category: 'Storage',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/833/833314.png',
+  },
+  {
+    title: 'Data Lake',
+    category: 'Storage',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3416/3416653.png',
+  },
+  {
+    title: 'Archive Storage',
+    category: 'Storage',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/5974/5974412.png',
+  },
+];
+
 
 export const networkServiceNodes: ServiceNode[] = [
   {
@@ -91,14 +174,55 @@ export const networkServiceNodes: ServiceNode[] = [
   {
     title: 'Virtual Network',
     category: 'Network',
-    iconUrl: 'https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg'
+    iconUrl: 'https://symbols.getvecta.com/stencil_28/71_virtual-network.8cd684329b.svg',
   },
   {
     title: 'Application Gateway',
     category: "Network",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2581/2581805.png'
-  }
-]
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2581/2581805.png',
+  },
+  {
+    title: 'Firewall',
+    category: 'Network',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/565/565547.png',
+  },
+  {
+    title: 'VPN Gateway',
+    category: 'Network',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2467/2467937.png',
+  },
+  {
+    title: 'DNS',
+    category: 'Network',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2921/2921822.png',
+  },
+  {
+    title: 'Network Interface',
+    category: 'Network',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1170/1170576.png',
+  },
+  {
+    title: 'ExpressRoute',
+    category: 'Network',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2921/2921819.png',
+  },
+  {
+    title: 'Gateway',
+    category: 'Network',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1995/1995563.png',
+  },
+  {
+    title: 'Subnets',
+    category: 'Network',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2942/2942780.png',
+  },
+  {
+    title: 'Network Security Group',
+    category: 'Network',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/565/565561.png',
+  },
+];
+
 
 
 export const dataFormatServiceNodes: ServiceNode[] = [
@@ -110,24 +234,80 @@ export const dataFormatServiceNodes: ServiceNode[] = [
   {
     title: 'XML',
     category: "Data Formats",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/337/337959.png '
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/337/337959.png',
   },
   {
     title: 'CSV',
     category: "Data Formats",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/8242/8242984.png '
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/8242/8242984.png',
   },
   {
     title: 'Binary',
     category: "Data Formats",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3143/3143509.png '
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3143/3143509.png',
   },
   {
     title: 'HTML',
     category: "Data Formats",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/136/136528.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/136/136528.png',
+  },
+  {
+    title: 'YAML',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/136/136539.png',
+  },
+  {
+    title: 'Avro',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/4140/4140379.png',
+  },
+  {
+    title: 'Parquet',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3209/3209979.png',
+  },
+  {
+    title: 'Protocol Buffers',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1055/1055646.png',
+  },
+  {
+    title: 'INI',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+  },
+  {
+    title: 'Markdown',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2111/2111500.png',
+  },
+  {
+    title: 'Peppol',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1962/1962038.png', // generic network icon
+  },
+  {
+    title: 'EDIFACT',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2040/2040887.png', // generic document icon
+  },
+  {
+    title: 'X12',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1962/1962038.png', // reuse network icon
+  },
+  {
+    title: 'HL7',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3176/3176303.png', // health related icon
+  },
+  {
+    title: 'Flat File',
+    category: "Data Formats",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1517/1517712.png', // text file icon
   }
-]
+];
+
 
 
 export const resourceServiceNodes: ServiceNode[] = [
@@ -180,11 +360,6 @@ export const resourceServiceNodes: ServiceNode[] = [
 
 export const triggerServiceNodes: ServiceNode[] = [
   {
-    title: 'Trigger',
-    category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6577/6577171.png'
-  },
-  {
     title: 'Webhook Trigger',
     category: "Trigger",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048953.png'
@@ -198,36 +373,118 @@ export const triggerServiceNodes: ServiceNode[] = [
     title: 'Event Trigger',
     category: "Trigger",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048963.png'
-  }
-];
-
-export const actionServiceNodes: ServiceNode[] = [
-  {
-    title: 'Action',
-    category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/8385/8385004.png'
   },
   {
-    title: 'Send Email',
-    category: "Action",
+    title: 'HTTP Trigger',
+    category: "Trigger",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/159/159469.png'
+  },
+  {
+    title: 'Timer Trigger',
+    category: "Trigger",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3103/3103446.png'
+  },
+  {
+    title: 'Queue Trigger',
+    category: "Trigger",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/710/710692.png'
+  },
+  {
+    title: 'Blob Trigger',
+    category: "Trigger",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2834/2834382.png'
+  },
+  {
+    title: 'Service Bus Trigger',
+    category: "Trigger",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/906/906175.png'
+  },
+  {
+    title: 'File System Trigger',
+    category: "Trigger",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/833/833524.png'
+  },
+  {
+    title: 'Email Trigger',
+    category: "Trigger",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/561/561127.png'
   },
   {
-    title: 'Call API',
-    category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048962.png'
-  },
-  {
-    title: 'Write to Database',
-    category: "Action",
+    title: 'Database Trigger',
+    category: "Trigger",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/9850/9850812.png'
   },
   {
-    title: 'Send Notification',
-    category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048960.png'
+    title: 'IoT Trigger',
+    category: "Trigger",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2222/2222607.png'
+  },
+  {
+    title: 'Custom Trigger',
+    category: "Trigger",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/189/189792.png'
   }
 ];
+
+
+export const actionServiceNodes: ServiceNode[] = [
+  {
+    title: 'HTTP Request',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048962.png' // API / HTTP icon
+  },
+  {
+    title: 'SMTP',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/561/561127.png' // email icon
+  },
+  {
+    title: 'FTP Upload',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/149/149995.png' // upload icon
+  },
+  {
+    title: 'SFTP Transfer',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2991/2991112.png' // lock+transfer icon (secure FTP)
+  },
+  {
+    title: 'WebSocket',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/4311/4311490.png' // websocket or network icon
+  },
+  {
+    title: 'MQTT',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2106/2106586.png' // publish or message icon
+  },
+  {
+    title: 'Database Write (SQL)',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/9850/9850812.png' // database icon
+  },
+  {
+    title: 'SOAP Request',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2111/2111613.png' // SOAP / XML icon
+  },
+  {
+    title: 'gRPC Call',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1006/1006552.png' // grpc / communication icon
+  },
+  {
+    title: 'REST API Call',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048962.png' // REST / HTTP icon again for clarity
+  },
+  {
+    title: 'Run Script',
+    category: "Action",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1006/1006555.png' // script / code icon
+  }
+];
+
 
 export const logicServiceNodes: ServiceNode[] = [
   {
@@ -246,6 +503,11 @@ export const logicServiceNodes: ServiceNode[] = [
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048972.png'
   },
   {
+    title: 'While',
+    category: "Logic",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2084/2084886.png' // loop/repeat icon representing while
+  },
+  {
     title: 'Switch',
     category: "Logic",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048973.png'
@@ -259,8 +521,49 @@ export const logicServiceNodes: ServiceNode[] = [
     title: 'Condition',
     category: "Logic",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048975.png'
+  },
+  {
+    title: 'Try',
+    category: "Logic",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2991/2991104.png'
+  },
+  {
+    title: 'Catch',
+    category: "Logic",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/709/709699.png'
+  },
+  {
+    title: 'For Each',
+    category: "Logic",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/892/892692.png'
+  },
+  {
+    title: 'Break',
+    category: "Logic",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1828/1828843.png'
+  },
+  {
+    title: 'Continue',
+    category: "Logic",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1828/1828859.png'
+  },
+  {
+    title: 'Parallel',
+    category: "Logic",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2920/2920386.png'
+  },
+  {
+    title: 'Wait Until',
+    category: "Logic",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1164/1164954.png'
+  },
+  {
+    title: 'Compose',
+    category: "Logic",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/151/151882.png' // compose or build icon
   }
 ];
+
 
 interface DraggableNodeProps {
   name: string;
