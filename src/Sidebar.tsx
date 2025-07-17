@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { ServiceCategory, ServiceNode } from "./CustomServiceNode";
 import { useReactFlow } from "@xyflow/react";
 import { FlowNode, MinimalEdge, MinimalNode } from "./Flow";
-import { FaSearch } from 'react-icons/fa';
-import { IconType } from "react-icons";
+import { FaSearch as FaSearchAny } from 'react-icons/fa';
 
-const FaSearchIcon: IconType = FaSearch;
+const FaSearch = FaSearchAny as any;
+
+
 
 
 export const computeServiceNodes: ServiceNode[] = [
@@ -649,7 +650,7 @@ const Sidebar = () => {
     <div style={sidebarStyle}>
       <h1 style={headerStyle}>FlowiTec</h1>
       <div style={searchBarStyle}>
-        <FaSearchIcon color="#00c8ff" size={16} />
+        <FaSearch color="#00c8ff" size={16} />
         <input
           type="text"
           style={searchInputStyle}
