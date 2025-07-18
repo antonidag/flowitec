@@ -350,11 +350,6 @@ export const resourceServiceNodes: ServiceNode[] = [
     title: 'Widget',
     category: "Resource",
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048978.png'
-  },
-  {
-    title: 'File',
-    category: "Resource",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048979.png'
   }
 ];
 
@@ -431,42 +426,37 @@ export const actionServiceNodes: ServiceNode[] = [
   {
     title: 'HTTP Request',
     category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048962.png' // API / HTTP icon
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1880/1880115.png' // API / HTTP icon
   },
   {
     title: 'SMTP',
     category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/561/561127.png' // email icon
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/16464/16464288.png' // email icon
   },
   {
     title: 'FTP Upload',
     category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/149/149995.png' // upload icon
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1091/1091223.png' // upload icon
   },
   {
     title: 'SFTP Transfer',
     category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2991/2991112.png' // lock+transfer icon (secure FTP)
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/8110/8110721.png' // lock+transfer icon (secure FTP)
   },
   {
     title: 'WebSocket',
     category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/4311/4311490.png' // websocket or network icon
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/7917/7917694.png' // websocket or network icon
   },
   {
     title: 'MQTT',
     category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2106/2106586.png' // publish or message icon
-  },
-  {
-    title: 'Database Write (SQL)',
-    category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/9850/9850812.png' // database icon
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2581/2581807.png' // publish or message icon
   },
   {
     title: 'SOAP Request',
     category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2111/2111613.png' // SOAP / XML icon
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6966/6966724.png' // SOAP / XML icon
   },
   {
     title: 'gRPC Call',
@@ -474,93 +464,73 @@ export const actionServiceNodes: ServiceNode[] = [
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/1006/1006552.png' // grpc / communication icon
   },
   {
-    title: 'REST API Call',
-    category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048962.png' // REST / HTTP icon again for clarity
-  },
-  {
     title: 'Run Script',
     category: "Action",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1006/1006555.png' // script / code icon
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2581/2581053.png' // script / code icon
   }
 ];
 
 
 export const logicServiceNodes: ServiceNode[] = [
   {
-    title: 'If',
+    title: 'Condition',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048970.png'
-  },
-  {
-    title: 'Else',
-    category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048971.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/4500/4500935.png'
   },
   {
     title: 'Loop',
-    category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048972.png'
+    category: "Logic", 
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1102/1102264.png'
   },
   {
     title: 'While',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2084/2084886.png' // loop/repeat icon representing while
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1102/1102365.png' // loop/repeat icon representing while
   },
   {
     title: 'Switch',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048973.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6855/6855509.png'
   },
   {
     title: 'Delay',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048974.png'
-  },
-  {
-    title: 'Condition',
-    category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048975.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/18670/18670701.png'
   },
   {
     title: 'Try',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2991/2991104.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6237/6237846.png'
   },
   {
     title: 'Catch',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/709/709699.png'
-  },
-  {
-    title: 'For Each',
-    category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/892/892692.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/9997/9997675.png'
   },
   {
     title: 'Break',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1828/1828843.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/10100/10100000.png'
   },
   {
     title: 'Continue',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1828/1828859.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6067/6067034.png'
   },
   {
     title: 'Parallel',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2920/2920386.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6062/6062667.png'
   },
   {
     title: 'Wait Until',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1164/1164954.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/16445/16445165.png'
   },
   {
     title: 'Compose',
     category: "Logic",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/151/151882.png' // compose or build icon
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3985/3985423.png' // compose or build icon
   }
 ];
 
