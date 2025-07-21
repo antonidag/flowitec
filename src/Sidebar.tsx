@@ -357,32 +357,27 @@ export const triggerServiceNodes: ServiceNode[] = [
   {
     title: 'Webhook Trigger',
     category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048953.png'
-  },
-  {
-    title: 'Schedule Trigger',
-    category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1828/1828919.png'
-  },
-  {
-    title: 'Event Trigger',
-    category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048963.png'
-  },
-  {
-    title: 'HTTP Trigger',
-    category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/159/159469.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/919/919829.png'
   },
   {
     title: 'Timer Trigger',
     category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/3103/3103446.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6806/6806662.png'
+  },
+  {
+    title: 'Event Trigger',
+    category: "Trigger",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6577/6577171.png'
+  },
+  {
+    title: 'HTTP Trigger',
+    category: "Trigger",
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/6577/6577171.png'
   },
   {
     title: 'Queue Trigger',
     category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/710/710692.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/14253/14253253.png'
   },
   {
     title: 'Blob Trigger',
@@ -390,29 +385,29 @@ export const triggerServiceNodes: ServiceNode[] = [
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/2834/2834382.png'
   },
   {
-    title: 'Service Bus Trigger',
+    title: 'Message Trigger',
     category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/906/906175.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/9195/9195102.png'
   },
   {
     title: 'File System Trigger',
     category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/833/833524.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/15266/15266150.png'
   },
   {
     title: 'Email Trigger',
     category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/561/561127.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/14699/14699189.png'
   },
   {
     title: 'Database Trigger',
     category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/9850/9850812.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/7069/7069812.png'
   },
   {
     title: 'IoT Trigger',
     category: "Trigger",
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2222/2222607.png'
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/11598/11598371.png'
   },
   {
     title: 'Custom Trigger',
