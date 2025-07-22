@@ -529,165 +529,6 @@ export const logicServiceNodes: ServiceNode[] = [
   }
 ];
 
-
-interface DraggableNodeProps {
-  name: string;
-  imgURL: string
-  appRoles?: string[],
-  category: ServiceCategory
-}
-
-// Function to convert a string to a color
-const nameToHexColor = (name: string): string => {
-  // Create a hash from the string
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  // Convert the hash to a hex color
-  const color = `#${((hash >> 24) & 0xff).toString(16).padStart(2, "0")}${((hash >> 16) & 0xff).toString(16).padStart(2, "0")}${((hash >> 8) & 0xff).toString(16).padStart(2, "0")}`;
-  return color.slice(0, 7); // Ensure it's a valid 6-character hex color
-};
-
-const DraggableNode = ({ name, imgURL, appRoles, category }: DraggableNodeProps) => {
-  const dynamicColor = nameToHexColor(category);
-  const transferData: ServiceNode = {
-    label: name,
-    iconUrl: imgURL,
-    title: name,
-    appRoles: appRoles,
-    category: category
-  };
-  return (
-    <div
-      draggable
-      onDragStart={(event) =>
-        event.dataTransfer.setData('application/reactflow', JSON.stringify(transferData))
-      }
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-        padding: '10px 18px',
-        background: `linear-gradient(90deg, ${dynamicColor} 0%, ${shadeColor(dynamicColor, -20)} 100%)`,
-        color: '#fff',
-        borderRadius: '50px',
-        cursor: 'grab',
-        boxShadow: `0 2px 12px ${dynamicColor}55`,
-        position: 'relative',
-        minWidth: '140px',
-        transition: 'box-shadow 0.2s, background 0.2s',
-        border: '1.5px solid #222c3c',
-        fontWeight: 600,
-        fontSize: '16px',
-        userSelect: 'none',
-      }}
-      onMouseOver={e => (e.currentTarget.style.boxShadow = `0 4px 24px ${dynamicColor}`)}
-      onMouseOut={e => (e.currentTarget.style.boxShadow = `0 2px 12px ${dynamicColor}55`)}
-    >
-      {imgURL && (
-        <img
-          src={imgURL}
-          alt={name}
-          draggable="false"
-          width="40"
-          height="40"
-          style={{
-            border: '2px solid #fff',
-            borderRadius: '50%',
-            boxShadow: `0 0 12px ${dynamicColor}`,
-            background: '#23272f',
-            padding: '3px',
-            marginRight: '8px',
-          }}
-        />
-      )}
-      <span style={{ fontWeight: 700, fontSize: '16px', flex: 1 }}>{name}</span>
-    </div>
-  );
-}
-
-// Utility function to slightly darken or lighten a hex color
-const shadeColor = (color: string, percent: number): string => {
-  const num = parseInt(color.slice(1), 16),
-    amt = Math.round(2.55 * percent),
-    r = (num >> 16) + amt,
-    g = ((num >> 8) & 0x00ff) + amt,
-    b = (num & 0x0000ff) + amt;
-  return `#${(0x1000000 + (r < 255 ? (r < 1 ? 0 : r) : 255) * 0x10000 + (g < 255 ? (g < 1 ? 0 : g) : 255) * 0x100 + (b < 255 ? (b < 1 ? 0 : b) : 255))
-    .toString(16)
-    .slice(1)}`;
-};
-
-const CollapsibleSection: React.FC<{ title: string; children: React.ReactNode }> = ({
-  title,
-  children,
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div style={sectionStyle}>
-      <div
-        onClick={() => setIsOpen(!isOpen)}
-        style={{
-          ...titleStyle,
-          boxShadow: isOpen
-            ? '0 0 15px rgba(0, 200, 255, 0.7)'
-            : '0 0 8px rgba(0, 200, 255, 0.5)',
-        }}
-      >
-        {title} <span style={arrowStyle}>{isOpen ? '▼' : '▲'}</span>
-      </div>
-      {isOpen && <div style={contentStyle}>{children}</div>}
-    </div>
-  );
-};
-
-
-// Styles
-const sectionStyle: React.CSSProperties = {
-  marginBottom: '22px',
-  border: 'none',
-  borderRadius: '18px',
-  overflow: 'hidden',
-  boxShadow: '0 2px 18px 0 rgba(0,200,255,0.10)',
-  background: 'rgba(44, 54, 74, 0.97)',
-  transition: 'box-shadow 0.2s',
-};
-
-const titleStyle: React.CSSProperties = {
-  cursor: 'pointer',
-  fontWeight: 600,
-  fontSize: '18px',
-  padding: '16px 0',
-  background: 'linear-gradient(90deg, #23272f 0%, #313a49 100%)',
-  color: '#00c8ff',
-  borderRadius: '18px 18px 0 0',
-  textAlign: 'center',
-  letterSpacing: '0.5px',
-  boxShadow: '0 2px 12px #222c3c',
-  transition: 'box-shadow 0.2s',
-  userSelect: 'none',
-};
-
-const arrowStyle: React.CSSProperties = {
-  fontSize: '16px',
-  color: '#00c8ff',
-  marginLeft: '10px',
-};
-
-const contentStyle: React.CSSProperties = {
-  padding: '18px 12px',
-  background: 'rgba(44, 54, 74, 0.99)',
-  color: '#f5f6fa',
-  fontSize: '16px',
-  borderTop: '1px solid #222c3c',
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '16px',
-  transition: 'max-height 0.4s cubic-bezier(.4,0,.2,1)',
-};
-
 const sidebarStyle: React.CSSProperties = {
   width: '220px',
   minWidth: '180px',
@@ -701,7 +542,8 @@ const sidebarStyle: React.CSSProperties = {
   fontFamily: 'Segoe UI, Arial, sans-serif',
   borderRight: '1.5px solid #222c3c',
   height: '100vh',
-  overflow: 'hidden',
+  overflowY: 'auto', // ✅ scrolls vertically when overflowing
+  overflowX: 'hidden',
   backdropFilter: 'blur(12px)',
 };
 
@@ -817,14 +659,6 @@ const categoryDividerStyle: React.CSSProperties = {
   opacity: 0.2,
 };
 
-const sectionContainerStyle: React.CSSProperties = {
-  overflowY: 'auto',
-  maxHeight: 'calc(100vh - 140px)',
-  paddingRight: '6px',
-  scrollbarWidth: 'thin',
-  scrollbarColor: '#00c8ff #23272f',
-  background: 'none',
-};
 
 const buttonStyle: React.CSSProperties = {
   padding: '7px 12px',
@@ -841,7 +675,6 @@ const buttonStyle: React.CSSProperties = {
   outline: 'none',
 };
 
-// ...modern styles are now declared above...
 // Sidebar component definition
 const Sidebar = () => {
   const { getNodes, getEdges } = useReactFlow();
@@ -958,15 +791,12 @@ const Sidebar = () => {
                   }}
                   onDragStart={event => {
                     const nodeWithProps = { ...node, label: node.title };
+                    const tooltip = event.currentTarget.querySelector('.sidebar-tooltip') as HTMLElement | null;
+                    if (tooltip) {
+                      tooltip.style.opacity = '0';
+                      tooltip.style.visibility = 'hidden';
+                    }
                     event.dataTransfer.setData('application/reactflow', JSON.stringify(nodeWithProps));
-                    event.currentTarget.style.opacity = '0.5';
-                    event.currentTarget.style.transform = 'scale(1.15)';
-                    event.currentTarget.style.boxShadow = '0 4px 16px #00c8ff';
-                  }}
-                  onDragEnd={event => {
-                    event.currentTarget.style.opacity = '1';
-                    event.currentTarget.style.transform = 'scale(1)';
-                    event.currentTarget.style.boxShadow = '0 1px 4px #00c8ff33';
                   }}
                   onMouseEnter={e => {
                     e.currentTarget.style.boxShadow = '0 2px 8px #00c8ff';
